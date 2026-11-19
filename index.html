@@ -1,0 +1,2209 @@
+<!DOCTYPE html>
+<html lang="es-EC">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lucía Patiño · Sistema de gestión</title>
+<meta name="description" content="Demo del sistema de gestión de Lucía Patiño, especialista en color: agenda por duración, fórmulas de color, retoques, pagos e informes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#3A2A22;
+  --ink-2:#4E3A2E;
+  --ink-3:#6B5344;
+  --accent:#B06A3B;
+  --accent-2:#8F5228;
+  --accent-3:#C88A54;
+  --accent-soft:#F2E2D2;
+  --accent-softer:#FBF3EA;
+  --bg:#F7F3EE;
+  --card:#FFFFFF;
+  --line:#E9DFD3;
+  --line-2:#F2ECE3;
+  --text:#2C2420;
+  --muted:#7A6A5E;
+  --muted-2:#9C8C7E;
+  --green:#2E7D5F;
+  --green-soft:#E4F3EC;
+  --amber:#9A6B18;
+  --amber-soft:#FBF0DC;
+  --red:#A6404E;
+  --red-soft:#FBE8EA;
+  --blue:#3C6E9F;
+  --blue-soft:#E8F0F8;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(58,42,34,.05), 0 8px 24px rgba(58,42,34,.06);
+  --sidebar-w:252px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background:var(--bg); color:var(--text); font-size:14.5px; line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{margin:0; font-weight:700; letter-spacing:-.015em}
+p{margin:0}
+a{color:inherit; text-decoration:none}
+button{font-family:inherit; cursor:pointer; border:0; background:none; color:inherit; font-size:inherit}
+input,select,textarea{font-family:inherit; font-size:inherit; color:inherit}
+.hidden{display:none !important}
+.ico{width:18px; height:18px; flex:0 0 18px; stroke:currentColor; fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round}
+.ico-sm{width:15px;height:15px;flex:0 0 15px}
+.ico-lg{width:22px;height:22px;flex:0 0 22px}
+
+/* ---------- Login ---------- */
+.login{
+  min-height:100vh; display:grid; grid-template-columns:1.05fr .95fr;
+  background:var(--ink);
+}
+.login-art{
+  position:relative; overflow:hidden; padding:52px 56px;
+  background:
+    radial-gradient(120% 90% at 0% 0%, #5B4030 0%, rgba(91,64,48,0) 60%),
+    radial-gradient(80% 70% at 100% 100%, #B06A3B 0%, rgba(176,106,59,0) 55%),
+    linear-gradient(160deg,#33241C 0%, #433026 55%, #5A4030 100%);
+  color:#FBF1E7; display:flex; flex-direction:column; justify-content:space-between;
+}
+.login-art::after{
+  content:""; position:absolute; inset:-20% -10% auto auto; width:420px; height:420px;
+  border-radius:50%; border:1px solid rgba(255,255,255,.16);
+  box-shadow:0 0 0 60px rgba(255,255,255,.045), 0 0 0 130px rgba(255,255,255,.03);
+}
+.brand{display:flex; align-items:center; gap:12px; position:relative; z-index:1}
+.brand-mark{
+  width:42px;height:42px;border-radius:13px; display:grid;place-items:center;
+  background:linear-gradient(150deg,#E7C29A,#B06A3B); color:#3A2A22; font-weight:800; font-size:19px;
+  letter-spacing:.02em; font-family:'Fraunces',Georgia,serif;
+}
+.brand-name{font-size:16px; font-weight:800; letter-spacing:.06em}
+.brand-sub{font-size:11px; opacity:.66; letter-spacing:.05em}
+.login-copy{position:relative; z-index:1; max-width:440px}
+.login-copy .eyebrow{font-size:11.5px; letter-spacing:.18em; text-transform:uppercase; color:#E7C29A; font-weight:700}
+.login-copy h1{font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:38px; line-height:1.14; margin:14px 0 16px; letter-spacing:-.01em}
+.login-copy p{color:#EBD9CA; font-size:14.5px; line-height:1.65}
+.login-list{list-style:none; margin:26px 0 0; padding:0; display:grid; gap:11px}
+.login-list li{display:flex; gap:10px; align-items:flex-start; font-size:13.5px; color:#F0E2D6}
+.login-list .ico{color:#E7C29A; margin-top:1px}
+.login-foot{position:relative; z-index:1; font-size:11.5px; color:#D8C2B1}
+.login-panel{display:flex; align-items:center; justify-content:center; background:#FCF9F6; padding:32px 24px}
+.login-card{width:100%; max-width:390px}
+.login-card .mobile-brand{display:none}
+.login-card h2{font-size:24px; margin:0 0 6px}
+.login-card .lead{color:var(--muted); font-size:13.5px; margin-bottom:24px}
+.field{margin-bottom:14px}
+.field label{display:block; font-size:12px; font-weight:600; color:var(--muted); margin-bottom:6px; letter-spacing:.01em}
+.input, .select, textarea.input{
+  width:100%; padding:11px 13px; border:1px solid var(--line); border-radius:10px;
+  background:#fff; transition:border-color .15s, box-shadow .15s; font-size:14px;
+}
+.input:focus,.select:focus,textarea.input:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft)}
+.input[readonly]{background:#FBF7F3; color:var(--muted)}
+.select{appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237A6A5E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:34px}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:10px 16px; border-radius:10px; font-size:13.5px; font-weight:700;
+  border:1px solid transparent; transition:all .15s; white-space:nowrap;
+}
+.btn-primary{background:var(--ink); color:#fff}
+.btn-primary:hover{background:#2B1E17}
+.btn-accent{background:var(--accent-2); color:#fff}
+.btn-accent:hover{background:#7C451F}
+.btn-ghost{background:#fff; border-color:var(--line); color:var(--text)}
+.btn-ghost:hover{background:#FBF6F0; border-color:#DCCBB9}
+.btn-soft{background:var(--accent-soft); color:#8A4E22}
+.btn-soft:hover{background:#EDD8C2}
+.btn-block{width:100%; padding:12px}
+.btn-sm{padding:7px 11px; font-size:12.5px; border-radius:8px}
+.link-btn{color:var(--accent-2); font-weight:600; font-size:13px}
+.link-btn:hover{text-decoration:underline}
+.login-hint{
+  margin-top:18px; padding:12px 14px; border-radius:10px; background:var(--accent-softer);
+  border:1px dashed #E3C9AE; font-size:12.5px; color:#8A4E22; display:flex; gap:9px; align-items:flex-start;
+}
+.login-note{margin-top:22px; font-size:11.5px; color:var(--muted-2); text-align:center; line-height:1.6}
+
+/* ---------- App shell ---------- */
+.app{display:flex; min-height:100vh}
+.sidebar{
+  width:var(--sidebar-w); flex:0 0 var(--sidebar-w); background:linear-gradient(180deg,#33241C 0%, #3E2C22 60%, #4A362A 100%);
+  color:#EFE0D3; display:flex; flex-direction:column; position:sticky; top:0; height:100vh; z-index:60;
+  transition:transform .22s ease;
+}
+.side-head{padding:22px 20px 18px; display:flex; align-items:center; gap:11px; border-bottom:1px solid rgba(255,255,255,.07)}
+.side-head .brand-mark{width:36px;height:36px;font-size:16px;border-radius:10px}
+.side-head .brand-name{font-size:13px}
+.side-head .brand-sub{font-size:10px; color:#C6AC97}
+.side-close{display:none; margin-left:auto; color:#D8C2B1; padding:4px}
+.side-nav{padding:14px 12px; overflow-y:auto; flex:1}
+.side-label{font-size:10px; text-transform:uppercase; letter-spacing:.16em; color:#A98A73; padding:10px 10px 6px; font-weight:700}
+.nav-item{
+  display:flex; align-items:center; gap:11px; padding:9.5px 11px; border-radius:9px;
+  color:#DDC8B7; font-size:13.5px; font-weight:500; margin-bottom:2px; width:100%; text-align:left;
+  transition:background .15s,color .15s;
+}
+.nav-item:hover{background:rgba(255,255,255,.06); color:#fff}
+.nav-item.active{background:rgba(231,194,154,.16); color:#fff; font-weight:700; box-shadow:inset 2px 0 0 #E7C29A}
+.nav-item .ico{opacity:.85}
+.nav-item.active .ico{opacity:1}
+.nav-badge{margin-left:auto; background:#E7C29A; color:#3A2A22; font-size:10.5px; font-weight:800; padding:1px 6px; border-radius:20px}
+.side-foot{padding:14px 16px 18px; border-top:1px solid rgba(255,255,255,.07); font-size:11px; color:#B89C87; line-height:1.55}
+.side-foot strong{color:#EFE0D3; display:block; font-size:12px; font-weight:700}
+
+.main{flex:1; min-width:0; display:flex; flex-direction:column}
+.topbar{
+  position:sticky; top:0; z-index:40; background:rgba(255,255,255,.9); backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line); padding:12px 26px; display:flex; align-items:center; gap:14px; min-height:64px;
+}
+.topbar .hamburger{display:none; padding:7px; border-radius:8px; border:1px solid var(--line); background:#fff}
+.topbar-title{display:flex; flex-direction:column; min-width:0}
+.topbar-title .t{font-size:15px; font-weight:800}
+.topbar-title .d{font-size:11.5px; color:var(--muted)}
+.topbar-spacer{flex:1}
+.topbar-actions{display:flex; align-items:center; gap:10px}
+.chip-date{
+  display:inline-flex; align-items:center; gap:7px; background:var(--accent-softer); color:#8A4E22;
+  padding:6px 11px; border-radius:20px; font-size:12px; font-weight:600; border:1px solid #F0E1CF;
+}
+.user-btn{display:flex; align-items:center; gap:9px; padding:5px 8px 5px 5px; border-radius:30px; border:1px solid var(--line); background:#fff}
+.user-btn:hover{background:#FBF6F0}
+.avatar{width:30px;height:30px;border-radius:50%; display:grid; place-items:center; font-size:11.5px; font-weight:800; color:#8A4E22; background:var(--accent-soft); flex:0 0 30px}
+.avatar.lg{width:52px;height:52px;font-size:17px; flex:0 0 52px}
+.user-btn .un{font-size:12.5px; font-weight:600; line-height:1.2}
+.user-btn .ur{font-size:10.5px; color:var(--muted)}
+.user-menu{
+  position:absolute; right:26px; top:60px; width:250px; background:#fff; border:1px solid var(--line);
+  border-radius:12px; box-shadow:0 12px 40px rgba(58,42,34,.14); padding:6px; z-index:70;
+}
+.user-menu a, .user-menu button{display:flex; align-items:center; gap:10px; width:100%; text-align:left; padding:9px 10px; border-radius:8px; font-size:13px; color:var(--text)}
+.user-menu a:hover, .user-menu button:hover{background:#FBF4EC}
+.user-menu .um-head{padding:10px 10px 9px; border-bottom:1px solid var(--line-2); margin-bottom:5px}
+.user-menu .um-head strong{display:block; font-size:13px}
+.user-menu .um-head span{font-size:11.5px; color:var(--muted)}
+.user-menu hr{border:0; border-top:1px solid var(--line-2); margin:5px 0}
+
+.view{padding:26px; flex:1; max-width:1500px; width:100%}
+.page-head{display:flex; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:20px}
+.page-head h1{font-size:22px}
+.page-head .sub{color:var(--muted); font-size:13px; margin-top:3px}
+.page-head .actions{margin-left:auto; display:flex; gap:8px; flex-wrap:wrap}
+
+/* ---------- Cards / KPI ---------- */
+.card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow)}
+.card-pad{padding:18px 20px}
+.card-head{display:flex; align-items:center; gap:10px; padding:16px 20px; border-bottom:1px solid var(--line-2)}
+.card-head h3{font-size:14px}
+.card-head .hint{font-size:11.5px; color:var(--muted)}
+.card-head .actions{margin-left:auto; display:flex; gap:8px; align-items:center}
+.grid{display:grid; gap:16px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr)); margin-bottom:16px}
+.stats-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.kpi{padding:17px 18px; position:relative; overflow:hidden}
+.kpi .k-top{display:flex; align-items:center; gap:9px; margin-bottom:9px}
+.kpi .k-ico{width:32px;height:32px;border-radius:9px; display:grid; place-items:center; background:var(--accent-softer); color:var(--accent-2)}
+.kpi .k-lbl{font-size:12px; color:var(--muted); font-weight:600}
+.kpi .k-val{font-size:26px; font-weight:800; letter-spacing:-.03em; line-height:1.1}
+.kpi .k-sub{font-size:11.5px; color:var(--muted); margin-top:4px; display:flex; align-items:center; gap:5px}
+.kpi .k-sub.up{color:var(--green)}
+.trend{display:inline-flex; align-items:center; gap:3px; font-weight:700}
+.dcols{display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); gap:16px}
+.dcols-3{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-top:16px}
+
+/* ---------- Lists / rows ---------- */
+.row{
+  display:flex; align-items:center; gap:12px; padding:12px 20px; border-top:1px solid var(--line-2);
+  width:100%; text-align:left; transition:background .12s;
+}
+.row:first-child{border-top:0}
+button.row:hover{background:#FCF8F3}
+.row .r-main{min-width:0; flex:1}
+.row .r-t{font-size:13.5px; font-weight:600; display:block}
+.row .r-s{font-size:11.5px; color:var(--muted); display:block}
+.row .r-end{margin-left:auto; text-align:right; display:flex; align-items:center; gap:10px}
+.time-box{
+  width:56px; flex:0 0 56px; text-align:center; border-right:1px solid var(--line-2); padding-right:10px;
+}
+.time-box .h{font-size:13.5px; font-weight:800; letter-spacing:-.02em}
+.time-box .ampm{font-size:9.5px; color:var(--muted-2); font-weight:700; text-transform:uppercase}
+.pill{display:inline-flex; align-items:center; gap:5px; padding:2.5px 9px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap}
+.pill::before{content:""; width:5px;height:5px;border-radius:50%; background:currentColor; opacity:.9}
+.pill.no-dot::before{display:none}
+.pill-green{background:var(--green-soft); color:var(--green)}
+.pill-amber{background:var(--amber-soft); color:var(--amber)}
+.pill-red{background:var(--red-soft); color:var(--red)}
+.pill-blue{background:var(--blue-soft); color:var(--blue)}
+.pill-copper{background:var(--accent-soft); color:#8A4E22}
+.pill-gray{background:#F0ECE7; color:#6E6158}
+.tag{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:7px;background:#F9F4EE;color:#6E6158;font-size:11px;font-weight:600;border:1px solid var(--line-2)}
+
+/* ---------- Agenda: barra ---------- */
+.agenda-bar{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:14px}
+.seg{display:inline-flex; background:#EDE4DA; padding:3px; border-radius:10px; gap:2px}
+.seg button{padding:6px 14px; border-radius:8px; font-size:12.5px; font-weight:700; color:var(--muted)}
+.seg button.on{background:#fff; color:var(--ink); box-shadow:0 1px 3px rgba(58,42,34,.12)}
+.date-nav{display:inline-flex; align-items:center; gap:4px; background:#fff; border:1px solid var(--line); border-radius:10px; padding:3px}
+.date-nav button{padding:5px 9px; border-radius:7px; color:var(--muted)}
+.date-nav button:hover{background:#FBF4EC; color:var(--text)}
+.date-nav .cur{padding:4px 10px; font-size:12.5px; font-weight:700; min-width:150px; text-align:center}
+.legend{display:flex; gap:14px; flex-wrap:wrap; font-size:11.5px; color:var(--muted); margin-top:12px}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+.dot{width:8px;height:8px;border-radius:50%; display:inline-block}
+
+/* ---------- Agenda: gantt del día (ancho = duración) ---------- */
+.gantt-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
+.gantt{background:#fff; border:1px solid var(--line); border-radius:12px; overflow:hidden; min-width:680px}
+.gantt-head{display:flex; border-bottom:1px solid var(--line); background:#FCF9F5}
+.gantt-lbl-w{width:104px; flex:0 0 104px; border-right:1px solid var(--line-2)}
+.gantt-scale{position:relative; flex:1; height:36px}
+.gantt-scale .hs{position:absolute; top:50%; transform:translate(-50%,-50%); font-size:10.5px; color:var(--muted); font-weight:700; white-space:nowrap}
+.gantt-lane{display:flex; border-top:1px solid var(--line-2); min-height:76px}
+.gantt-lane:first-of-type{border-top:0}
+.lane-lbl{width:104px; flex:0 0 104px; border-right:1px solid var(--line-2); padding:12px 10px; font-size:12.5px; font-weight:700; background:#FDFBF8}
+.lane-lbl .role{display:block; font-size:10px; color:var(--muted); font-weight:500; margin-top:1px}
+.lane-track{position:relative; flex:1; min-height:76px}
+.lane-grid{position:absolute; inset:0; pointer-events:none}
+.lane-grid .gl{position:absolute; top:0; bottom:0; width:1px; background:var(--line-2)}
+.gbar{position:absolute; top:12px; bottom:12px; border-radius:8px; padding:6px 9px; text-align:left; background:var(--accent-soft); border-left:3px solid var(--accent-2); overflow:hidden; line-height:1.25; display:flex; flex-direction:column; justify-content:center; transition:filter .12s, box-shadow .12s}
+.gbar:hover{filter:brightness(.98); box-shadow:0 2px 10px rgba(58,42,34,.12); z-index:2}
+.gbar .gt{font-weight:800; font-size:10px; color:#8A4E22; letter-spacing:.01em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.gbar .gn{font-weight:700; font-size:11.5px; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.gbar .gs{color:var(--muted); font-size:9.5px; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.gbar.st-pendiente{background:#FDF5E8; border-left-color:#D9A046}
+.gbar.st-pendiente .gt{color:#8A6114}
+.gbar.st-atendida{background:#EEF3EF; border-left-color:#8FA79B}
+.gbar.st-atendida .gt{color:#5C7468}
+.gbar.st-cancelada{background:#FAEFF0; border-left-color:#C58A92; opacity:.85}
+.gbar.st-cancelada .gn{text-decoration:line-through; text-decoration-color:#C58A92}
+.gbar.tiny{padding:4px 6px}
+.gbar.tiny .gs{display:none}
+.gbar.tiny .gt{font-size:9px}
+.gantt-empty{padding:16px 18px; color:var(--muted-2); font-size:12px}
+
+/* ---------- Agenda: semana (alto = duración) ---------- */
+.week-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
+.week-wrap{display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:8px; min-width:720px}
+.week-col{background:#fff; border:1px solid var(--line); border-radius:11px; overflow:hidden; display:flex; flex-direction:column; min-width:0}
+.week-col.today{border-color:#DDAE7C; box-shadow:0 0 0 1px #DDAE7C inset}
+.week-col-h{padding:8px 6px; text-align:center; border-bottom:1px solid var(--line-2); background:#FCF9F5}
+.week-col.today .week-col-h{background:var(--accent-softer)}
+.week-col-h .wd{font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700}
+.week-col-h .wn{font-size:15px; font-weight:800; letter-spacing:-.02em}
+.week-col.today .week-col-h .wn{color:var(--accent-2)}
+.week-body{position:relative; height:430px; background-image:linear-gradient(var(--line-2) 1px, transparent 1px); background-size:100% 14.33%}
+.wblock{position:absolute; left:3px; right:3px; border-radius:6px; padding:3px 5px; font-size:9.5px; line-height:1.18; background:var(--accent-softer); border-left:3px solid var(--accent); overflow:hidden; text-align:left; transition:filter .12s}
+.wblock:hover{filter:brightness(.97)}
+.wblock .wt{font-weight:800; color:#8A4E22; font-size:9px; display:block}
+.wblock .wn2{font-weight:600; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.wblock .ws{color:var(--muted); font-size:8.5px; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.wblock.st-pendiente{background:#FDF5E8; border-left-color:#D9A046}
+.wblock.st-pendiente .wt{color:#8A6114}
+.wblock.st-atendida{background:#EEF3EF; border-left-color:#8FA79B}
+.wblock.st-atendida .wt{color:#5C7468}
+.wblock.st-cancelada{background:#FAEFF0; border-left-color:#C58A92; opacity:.85}
+.wblock.st-cancelada .wn2{text-decoration:line-through}
+.wblock.tiny{padding:2px 4px}
+.wblock.tiny .ws{display:none}
+.week-empty{position:absolute; inset:0; display:grid; place-items:center; color:var(--muted-2); font-size:11px}
+
+/* ---------- Search / tables ---------- */
+.search-wrap{position:relative; max-width:340px; width:100%}
+.search-wrap .ico{position:absolute; left:11px; top:50%; transform:translateY(-50%); color:var(--muted-2)}
+.search-wrap .input{padding-left:34px}
+.table-wrap{overflow-x:auto}
+table.t{width:100%; border-collapse:collapse; font-size:13px}
+table.t th{
+  text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted);
+  padding:10px 14px; background:#FCF9F5; border-bottom:1px solid var(--line); font-weight:700; white-space:nowrap;
+}
+table.t td{padding:11px 14px; border-bottom:1px solid var(--line-2); vertical-align:middle; white-space:nowrap}
+table.t tr:last-child td{border-bottom:0}
+table.t tbody tr:hover{background:#FDFAF6}
+table.t .num{text-align:right; font-variant-numeric:tabular-nums; font-weight:600}
+.t-name{display:flex; align-items:center; gap:9px; font-weight:600}
+.mini{font-size:11px; color:var(--muted)}
+.client-row{display:flex; align-items:center; gap:11px; padding:11px 18px; border-top:1px solid var(--line-2); width:100%; text-align:left}
+.client-row:first-child{border-top:0}
+.client-row:hover{background:#FCF8F3}
+.client-row .r-main{flex:1; min-width:0}
+.client-row .r-t{font-size:13.5px; font-weight:700; display:block}
+.client-row .r-s{font-size:11.5px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:block}
+.cr-meta{display:flex; gap:16px; font-size:11.5px; color:var(--muted); white-space:nowrap; flex:0 0 auto}
+.cr-meta b{color:var(--text); font-weight:700}
+@media (max-width:820px){ .cr-meta{display:none} }
+
+/* ---------- Messages ---------- */
+.msg-shell{display:grid; grid-template-columns:320px minmax(0,1fr); background:#fff; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; height:calc(100vh - 190px); min-height:480px; box-shadow:var(--shadow)}
+.msg-list{border-right:1px solid var(--line); display:flex; flex-direction:column; min-width:0; background:#FDFBF8}
+.msg-list-h{padding:14px 16px; border-bottom:1px solid var(--line); background:#fff}
+.msg-list-h h3{font-size:14px; margin-bottom:2px}
+.msg-list-h p{font-size:11.5px; color:var(--muted)}
+.msg-items{overflow-y:auto; flex:1; min-width:0}
+.msg-item{display:flex; gap:11px; padding:12px 14px; border-bottom:1px solid var(--line-2); width:100%; text-align:left; align-items:flex-start; min-width:0}
+.msg-item:hover{background:#FBF4EC}
+.msg-item.on{background:var(--accent-softer); box-shadow:inset 3px 0 0 var(--accent)}
+.msg-item .m-main{flex:1; min-width:0}
+.msg-item .m-top{display:flex; gap:8px; align-items:baseline}
+.msg-item .m-n{font-size:12.5px; font-weight:700; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.msg-item .m-t{font-size:10px; color:var(--muted-2); flex:0 0 auto}
+.msg-item .m-p{font-size:11.5px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top:2px; display:block}
+.msg-item .m-badge{width:17px;height:17px;border-radius:50%;background:var(--accent-2);color:#fff;font-size:9.5px;font-weight:800;display:grid;place-items:center}
+.msg-pane{display:flex; flex-direction:column; min-width:0; background:#F9F6F2}
+.msg-pane-h{display:flex; align-items:center; gap:11px; padding:12px 16px; border-bottom:1px solid var(--line); background:#fff}
+.msg-pane-h .m-main{flex:1; min-width:0}
+.msg-pane-h .m-n{font-size:13.5px; font-weight:700}
+.msg-pane-h .m-s{font-size:11px; color:var(--muted); display:flex; align-items:center; gap:5px}
+.msg-back{display:none; padding:4px; color:var(--muted)}
+.chat{flex:1; overflow-y:auto; padding:18px 20px; display:flex; flex-direction:column; gap:9px}
+.day-sep{align-self:center; background:#E9DFD3; color:#6E6158; font-size:10.5px; font-weight:700; padding:3px 10px; border-radius:20px; margin:6px 0}
+.auto-note{align-self:center; max-width:85%; background:#FFF8E8; border:1px solid #F0DDB4; color:#7A5A16; font-size:11px; padding:7px 11px; border-radius:9px; text-align:center; line-height:1.45; display:flex; gap:7px; align-items:center}
+.bubble{max-width:74%; padding:8px 12px; border-radius:12px; font-size:13px; line-height:1.45; position:relative}
+.bubble .bt{font-size:10px; color:var(--muted-2); margin-top:3px; text-align:right}
+.bubble.in{background:#fff; border:1px solid var(--line); border-bottom-left-radius:4px; align-self:flex-start}
+.bubble.out{background:#E3EDE6; border:1px solid #CBE3D5; border-bottom-right-radius:4px; align-self:flex-end}
+.bubble .sender{font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--accent-2); margin-bottom:2px}
+.bubble.out .sender{color:#3E6B53}
+.chat-input{display:flex; gap:8px; padding:12px 16px; border-top:1px solid var(--line); background:#fff; align-items:center}
+.chat-input .input{background:#F8F4EE; border-color:transparent}
+.chat-input .input:focus{background:#fff; border-color:var(--accent)}
+.chat-note{font-size:10.5px; color:var(--muted-2); padding:0 16px 10px; background:#fff}
+
+/* ---------- Informes ---------- */
+.chart-bars{display:flex; align-items:flex-end; gap:14px; height:180px; padding:18px 4px 0}
+.chart-bars .bar-wrap{flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:6px; height:100%}
+.chart-bars .bar{width:100%; max-width:52px; border-radius:7px 7px 3px 3px; background:linear-gradient(180deg,#DDAE7C,#B06A3B); min-height:4px; transition:height .4s; position:relative}
+.chart-bars .bar .bv{position:absolute; top:-19px; left:0; right:0; text-align:center; font-size:10.5px; font-weight:800; color:var(--accent-2)}
+.chart-bars .bl{font-size:10.5px; color:var(--muted); font-weight:600; text-align:center}
+.hbar{margin-bottom:12px}
+.hbar-top{display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px; gap:10px}
+.hbar-top .n{font-weight:600}
+.hbar-top .v{color:var(--muted); font-weight:600; white-space:nowrap}
+.hbar-track{height:9px; background:#F1E9DF; border-radius:6px; overflow:hidden}
+.hbar-fill{height:100%; border-radius:6px; background:linear-gradient(90deg,#DDAE7C,#8F5228)}
+.donut-wrap{display:flex; align-items:center; gap:22px; flex-wrap:wrap}
+.donut{width:150px; height:150px; flex:0 0 150px}
+.donut circle{fill:none; stroke-width:20}
+.donut-legend{display:grid; gap:9px; font-size:12px; flex:1; min-width:140px}
+.donut-legend div{display:flex; align-items:center; gap:7px; justify-content:space-between; border-bottom:1px dashed var(--line); padding-bottom:6px}
+.donut-legend .l{display:flex; align-items:center; gap:7px; color:var(--muted)}
+.donut-legend .n{font-weight:800}
+.legend-dot{width:9px;height:9px;border-radius:3px;display:inline-block}
+.months{display:flex; gap:6px; align-items:flex-end; height:150px; padding-top:20px}
+.months .m{flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:6px; height:100%}
+.months .mb{width:100%; border-radius:6px 6px 2px 2px; background:linear-gradient(180deg,#E6C9AC,#C08A5C)}
+.months .ml{font-size:10px; color:var(--muted); font-weight:600; text-transform:capitalize}
+.months .mv{font-size:10px; font-weight:800; color:#8A4E22}
+
+/* ---------- Settings ---------- */
+.set-grid{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,340px); gap:16px; align-items:start}
+.set-grid > *, .dcols > *, .dcols-3 > *, .ficha-grid > *{min-width:0}
+.set-row{display:flex; align-items:center; gap:12px; padding:11px 18px; border-top:1px solid var(--line-2); flex-wrap:wrap}
+.set-row:first-child{border-top:0}
+.set-row .s-main{flex:1; min-width:160px}
+.set-row .s-t{font-size:13px; font-weight:600}
+.set-row .s-s{font-size:11px; color:var(--muted)}
+.set-row .s-ctl{display:flex; gap:7px; align-items:center}
+.inline-num{width:82px; padding:7px 9px; text-align:right; border:1px solid var(--line); border-radius:8px; font-size:12.5px; font-weight:600}
+.inline-num:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft)}
+.inline-text{width:100%; padding:6px 8px; border:1px solid transparent; border-radius:7px; font-size:12.5px; font-weight:600; background:transparent}
+.inline-text:hover{border-color:var(--line)}
+.inline-text:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); background:#fff}
+.switch{position:relative; width:42px; height:24px; flex:0 0 42px; border-radius:20px; background:#DCD1C6; transition:background .18s}
+.switch::after{content:""; position:absolute; top:3px; left:3px; width:18px;height:18px;border-radius:50%; background:#fff; transition:transform .18s; box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.switch.on{background:var(--accent-2)}
+.switch.on::after{transform:translateX(18px)}
+.hours-row{display:flex; align-items:center; gap:10px; padding:9px 18px; border-top:1px solid var(--line-2); font-size:12.5px; flex-wrap:wrap}
+.hours-row:first-child{border-top:0}
+.hours-row .d{width:110px; font-weight:600; text-transform:capitalize}
+.hours-row .t{display:flex; align-items:center; gap:6px; color:var(--muted); font-size:12px}
+.hours-row input[type=time]{border:1px solid var(--line); border-radius:8px; padding:5px 7px; font-size:12px; font-weight:600}
+.preview-msg{background:#E3EDE6; border:1px solid #CBE3D5; border-radius:12px 12px 12px 4px; padding:11px 13px; font-size:12.5px; line-height:1.5; color:#243A2C}
+.preview-wrap{padding:14px 18px 18px; background:#FBF8F5; border-top:1px solid var(--line-2)}
+.preview-lbl{font-size:10.5px; text-transform:uppercase; letter-spacing:.09em; color:var(--muted); font-weight:700; margin-bottom:8px}
+
+/* ---------- Client ficha ---------- */
+.ficha-grid{display:grid; grid-template-columns:minmax(0,1fr) 330px; gap:16px; align-items:start}
+.ficha-head{display:flex; gap:15px; align-items:center; flex-wrap:wrap}
+.ficha-head .fh-main{flex:1; min-width:200px}
+.ficha-head h2{font-size:20px}
+.ficha-head .fh-sub{font-size:12.5px; color:var(--muted); margin-top:3px}
+.info-list{display:grid; gap:11px}
+.info-list .il{display:flex; gap:9px; align-items:flex-start; font-size:12.5px}
+.info-list .il .ico{color:var(--muted-2); margin-top:1px}
+.info-list .il span{color:var(--text)}
+.info-list .il .lbl{display:block; font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; font-weight:700}
+.pack{padding:12px 14px; border:1px solid var(--line); border-radius:10px; margin-bottom:9px; background:#FDFBF8}
+.pack-top{display:flex; align-items:center; gap:8px; margin-bottom:6px}
+.pack-top .pn{font-size:12.5px; font-weight:700; flex:1}
+.pack-meta{font-size:11px; color:var(--muted); display:flex; justify-content:space-between; margin-bottom:6px}
+.progress{height:6px; background:#EFE5D9; border-radius:5px; overflow:hidden}
+.progress i{display:block; height:100%; background:linear-gradient(90deg,#DDAE7C,#8F5228); border-radius:5px}
+.note{background:#FFFCF2; border:1px solid #F2E5C4; border-radius:9px; padding:10px 12px; font-size:12px; color:#5E4B1F; line-height:1.5; margin-bottom:8px}
+.photos{display:grid; grid-template-columns:repeat(3,1fr); gap:7px}
+.photo{aspect-ratio:1; border-radius:8px; background:linear-gradient(135deg,#F1DFCB,#DDB68C); position:relative; overflow:hidden; border:1px solid var(--line)}
+.photo::after{content:""; position:absolute; inset:0; background:radial-gradient(60% 60% at 30% 25%, rgba(255,255,255,.6), transparent 70%)}
+.photo.alt{background:linear-gradient(135deg,#EDE3EA,#C9AFCB)}
+.photo.alt2{background:linear-gradient(135deg,#E9E2D3,#C7B58F)}
+
+/* formula de color */
+.formula{background:linear-gradient(135deg,#FBF1E6,#F4E1CB); border:1px solid #E9D3BC; border-radius:12px; padding:15px 17px; position:relative; overflow:hidden}
+.formula::after{content:""; position:absolute; right:-40px; top:-40px; width:120px; height:120px; border-radius:50%; background:radial-gradient(circle,rgba(176,106,59,.14),transparent 70%)}
+.formula .f-lbl{font-size:10px; text-transform:uppercase; letter-spacing:.09em; color:#8A5A2E; font-weight:800; margin-bottom:10px; display:flex; align-items:center; gap:6px}
+.formula .f-mix{font-size:20px; font-weight:800; letter-spacing:.01em; color:#3A2A22; margin-bottom:10px; font-variant-numeric:tabular-nums; line-height:1.2}
+.formula .f-rows{display:grid; gap:6px; position:relative}
+.formula .f-row{display:flex; justify-content:space-between; gap:10px; font-size:12px; border-bottom:1px dashed #EBD8C2; padding-bottom:5px}
+.formula .f-row:last-child{border-bottom:0; padding-bottom:0}
+.formula .f-row .k{color:#8A6A4E}
+.formula .f-row .v{font-weight:700; color:#3A2A22; text-align:right}
+.formula .f-note{font-size:11px; color:#6B5344; margin-top:10px; line-height:1.45; border-top:1px solid #E9D3BC; padding-top:9px; position:relative}
+.formula-empty{padding:14px 16px; border:1px dashed var(--line); border-radius:10px; font-size:12px; color:var(--muted); background:#FDFBF8}
+
+/* ---------- Modal / drawer / toast ---------- */
+.overlay{position:fixed; inset:0; background:rgba(43,28,20,.44); display:flex; align-items:center; justify-content:center; z-index:100; padding:18px; animation:fade .15s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.modal{
+  background:#fff; border-radius:16px; width:100%; max-width:520px; box-shadow:0 24px 70px rgba(43,28,20,.3);
+  max-height:92vh; display:flex; flex-direction:column; animation:pop .18s ease;
+}
+@keyframes pop{from{transform:translateY(8px) scale(.99); opacity:.6}to{transform:none; opacity:1}}
+.modal-h{display:flex; align-items:flex-start; gap:12px; padding:18px 20px 12px}
+.modal-h h3{font-size:17px}
+.modal-h .sub{font-size:12px; color:var(--muted); margin-top:2px}
+.modal-x{margin-left:auto; padding:5px; border-radius:8px; color:var(--muted)}
+.modal-x:hover{background:#FBF4EC; color:var(--text)}
+.modal-b{padding:4px 20px 6px; overflow-y:auto}
+.modal-f{padding:14px 20px 18px; display:flex; gap:8px; justify-content:flex-end; border-top:1px solid var(--line-2); margin-top:10px; flex-wrap:wrap}
+.form-grid{display:grid; grid-template-columns:1fr 1fr; gap:11px}
+.form-grid .full{grid-column:1/-1}
+.detail-rows{display:grid; gap:0; border:1px solid var(--line-2); border-radius:10px; overflow:hidden; margin-bottom:14px}
+.detail-rows .dr{display:flex; gap:10px; padding:10px 12px; border-top:1px solid var(--line-2); font-size:12.5px}
+.detail-rows .dr:first-child{border-top:0}
+.detail-rows .dr .k{color:var(--muted); width:110px; flex:0 0 110px; font-size:11.5px}
+.detail-rows .dr .v{font-weight:600; flex:1}
+.toast{
+  position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(12px); z-index:200;
+  background:var(--ink); color:#fff; padding:11px 18px; border-radius:10px; font-size:12.5px; font-weight:600;
+  box-shadow:0 10px 30px rgba(43,28,20,.3); opacity:0; transition:all .22s; pointer-events:none; max-width:92vw;
+  display:flex; align-items:center; gap:8px;
+}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+
+/* ---------- Misc ---------- */
+.footer{padding:16px 26px 22px; border-top:1px solid var(--line); font-size:11px; color:var(--muted-2); line-height:1.6; display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+.footer .brand-mini{font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-size:10px}
+.empty{padding:26px 18px; text-align:center; color:var(--muted); font-size:12.5px}
+.alert-row{display:flex; gap:10px; align-items:flex-start; padding:11px 18px; border-top:1px solid var(--line-2); width:100%; text-align:left}
+.alert-row:hover{background:#FCF8F3}
+.alert-row .a-ico{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;flex:0 0 30px}
+.alert-row .a-main{flex:1; min-width:0}
+.alert-row .a-t{font-size:12.5px; font-weight:600; display:block}
+.alert-row .a-s{font-size:11px; color:var(--muted); margin-top:1px; display:block}
+.a-amber{background:var(--amber-soft); color:var(--amber)}
+.a-red{background:var(--red-soft); color:var(--red)}
+.a-copper{background:var(--accent-soft); color:#8A4E22}
+@media (max-width:1100px){
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stats-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .dcols,.dcols-3,.set-grid,.ficha-grid{grid-template-columns:minmax(0,1fr)}
+  .msg-shell{grid-template-columns:270px minmax(0,1fr)}
+}
+@media (max-width:860px){
+  :root{--sidebar-w:260px}
+  .sidebar{position:fixed; left:0; top:0; transform:translateX(-100%); box-shadow:0 0 60px rgba(43,28,20,.35)}
+  .sidebar.open{transform:none}
+  .side-close{display:block}
+  .topbar{padding:10px 14px; min-height:58px}
+  .topbar .hamburger{display:grid; place-items:center}
+  .view{padding:16px 14px}
+  .page-head h1{font-size:19px}
+  .topbar-title .d{display:none}
+  .chip-date .txt{display:none}
+  .user-btn .u-meta{display:none}
+  .login{grid-template-columns:1fr}
+  .login-art{display:none}
+  .login-card .mobile-brand{display:flex; margin-bottom:26px}
+  .login-panel{padding:26px 20px; align-items:flex-start}
+  .msg-shell{grid-template-columns:1fr; height:auto; min-height:0}
+  .msg-list{border-right:0; max-height:none}
+  .msg-shell.show-chat .msg-list{display:none}
+  .msg-shell:not(.show-chat) .msg-pane{display:none}
+  .msg-back{display:grid; place-items:center}
+  .msg-pane{height:calc(100vh - 150px); min-height:420px}
+  .kpis{gap:10px}
+  .kpi .k-val{font-size:22px}
+  .card-pad{padding:14px}
+  .card-head{padding:13px 14px}
+  .row{padding:11px 14px}
+  .footer{padding:14px}
+  .footer .sep{display:none}
+  .modal-f{justify-content:stretch}
+  .modal-f .btn{flex:1}
+}
+@media (max-width:520px){
+  .kpis{grid-template-columns:1fr 1fr}
+  .form-grid{grid-template-columns:1fr}
+  .user-menu{right:12px; top:56px}
+  .msg-pane{height:calc(100vh - 140px)}
+  .gantt{min-width:620px}
+  .week-wrap{min-width:660px}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<section class="login" id="login">
+  <div class="login-art">
+    <div class="brand">
+      <div class="brand-mark">LP</div>
+      <div>
+        <div class="brand-name">Lucía Patiño</div>
+        <div class="brand-sub">Especialista en Color · Cuenca</div>
+      </div>
+    </div>
+    <div class="login-copy">
+      <div class="eyebrow">Sistema de gestión</div>
+      <h1>Su color, su agenda y sus clientas en un solo lugar.</h1>
+      <p>Agenda por duración real del servicio, ficha de cada clienta con su fórmula de color, aviso de retoques, cobros e informes. Usted trabaja desde aquí; las clientas siguen reservando desde la web.</p>
+      <ul class="login-list">
+        <li><svg class="ico" viewBox="0 0 24 24"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg><span>Agenda donde el balayage ocupa su tiempo real, no un espacio fijo</span></li>
+        <li><svg class="ico" viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg><span>Fórmula de color de cada clienta guardada y siempre a mano</span></li>
+        <li><svg class="ico" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.8 8.8 0 0 1-4-.9L3 21l1.9-4.9A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg><span>Aviso de retoque cuando ya toca la raíz y recordatorio del turno</span></li>
+        <li><svg class="ico" viewBox="0 0 24 24"><path d="M3 3v18h18M7 15l4-4 3 3 5-6"/></svg><span>Cobros del mes, ticket promedio y horas ocupadas</span></li>
+      </ul>
+    </div>
+    <div class="login-foot">Demo de referencia · Nocodeveloper</div>
+  </div>
+  <div class="login-panel">
+    <div class="login-card">
+      <div class="brand mobile-brand">
+        <div class="brand-mark">LP</div>
+        <div>
+          <div class="brand-name" style="color:#3A2A22">Lucía Patiño</div>
+          <div class="brand-sub" style="color:#7A6A5E">Sistema de gestión</div>
+        </div>
+      </div>
+      <h2>Entrar al sistema</h2>
+      <p class="lead">Acceso del estudio. Esta es una versión de demostración.</p>
+      <div class="field">
+        <label for="login-user">Usuario</label>
+        <input class="input" id="login-user" type="text" value="lucia@luciapatino.com" readonly>
+      </div>
+      <div class="field">
+        <label for="login-pass">Contraseña</label>
+        <input class="input" id="login-pass" type="password" value="demo" readonly>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="enterApp()">Entrar en modo demostración</button>
+      <div class="login-hint">
+        <svg class="ico ico-sm" viewBox="0 0 24 24" style="margin-top:2px"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+        <span>Modo demostración: no se envía ningún mensaje ni se guarda nada fuera de esta pantalla.</span>
+      </div>
+      <p class="login-note">Lucía Patiño · Especialista en Color<br>Cuenca, Azuay · Ecuador<br>Demo hecho por Nocodeveloper</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= APP ================= -->
+<div class="app hidden" id="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="side-head">
+      <div class="brand-mark">LP</div>
+      <div>
+        <div class="brand-name">Lucía Patiño</div>
+        <div class="brand-sub">Especialista en Color</div>
+      </div>
+      <button class="side-close" onclick="toggleSide(false)" aria-label="Cerrar menú">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <nav class="side-nav" id="nav"></nav>
+    <div class="side-foot">
+      <strong>Lucía Patiño · Color</strong>
+      Cuenca, Azuay<br>
+      <span id="sideFootMeta"></span>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <button class="hamburger" onclick="toggleSide(true)" aria-label="Abrir menú">
+        <svg class="ico ico-lg" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <div class="topbar-title">
+        <span class="t" id="tbTitle">Escritorio</span>
+        <span class="d" id="tbDate"></span>
+      </div>
+      <div class="topbar-spacer"></div>
+      <div class="topbar-actions">
+        <span class="chip-date"><svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg><span class="txt" id="chipToday"></span></span>
+        <button class="user-btn" onclick="toggleUserMenu(event)">
+          <span class="avatar">LP</span>
+          <span class="u-meta" style="text-align:left">
+            <span class="un" style="display:block">Lucía Patiño</span>
+            <span class="ur" style="display:block">Colorista</span>
+          </span>
+          <svg class="ico ico-sm" viewBox="0 0 24 24" style="color:#9C8C7E"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </div>
+    </header>
+    <main class="view" id="view"></main>
+    <footer class="footer">
+      <span class="brand-mini">Nocodeveloper</span>
+      <span>Demo de referencia hecho por Nocodeveloper. Los datos son de ejemplo; en el sistema real se cargan los de la clienta.</span>
+    </footer>
+  </div>
+</div>
+
+<div id="modalRoot"></div>
+<div class="toast" id="toast"></div>
+<script>
+/* ============================================================
+   Datos de demostración — se generan en el navegador, relativos
+   a la fecha en que se abre el demo. Nada sale a ningún servidor.
+   ============================================================ */
+const ICONS = {
+  home:'<path d="M3 10.5 12 3l9 7.5"/><path d="M5 10v10h5v-6h4v6h5V10"/>',
+  calendar:'<path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>',
+  users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',
+  chat:'<path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.8 8.8 0 0 1-4-.9L3 21l1.9-4.9A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/>',
+  cash:'<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 12h.01M18 12h.01"/>',
+  chart:'<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',
+  gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+  arrowLeft:'<path d="M19 12H5M12 19l-7-7 7-7"/>',
+  arrowRight:'<path d="M5 12h14M12 5l7 7-7 7"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  phone:'<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/>',
+  mail:'<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/>',
+  pin:'<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="2.6"/>',
+  card:'<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>',
+  wallet:'<path d="M20 7H5a2 2 0 0 1 0-4h13v4"/><path d="M3 5v14a2 2 0 0 0 2 2h15V7H5"/><path d="M16 13h2"/>',
+  down:'<path d="M12 4v12M6 11l6 6 6-6M4 21h16"/>',
+  up:'<path d="M12 20V8M6 13l6-6 6 6M4 3h16"/>',
+  warn:'<path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>',
+  gift:'<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/><path d="M12 8C12 5 10 3 8 3a2.5 2.5 0 0 0 0 5zM12 8c0-3 2-5 4-5a2.5 2.5 0 0 1 0 5z"/>',
+  sparkle:'<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.8 2.8M14.9 14.9l2.8 2.8M17.7 6.3l-2.8 2.8M9.1 14.9l-2.8 2.8"/>',
+  droplet:'<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',
+  palette:'<path d="M12 3a9 9 0 0 0 0 18 2.5 2.5 0 0 0 2.5-2.5c0-1.5 1-2.5 2.5-2.5H19a3 3 0 0 0 3-3 9 9 0 0 0-10-10z"/><circle cx="7.5" cy="11.5" r="1.2"/><circle cx="11" cy="7.5" r="1.2"/><circle cx="16" cy="9" r="1.2"/>',
+  external:'<path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
+  x:'<path d="M18 6 6 18M6 6l12 12"/>',
+  bell:'<path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>',
+  logout:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/>',
+  edit:'<path d="M17 3a2.8 2.8 0 0 1 4 4L7.5 20.5 2 22l1.5-5.5z"/>',
+  scissors:'<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/>',
+  send:'<path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/>',
+  trend:'<path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/>',
+  file:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/>',
+  menu:'<path d="M3 6h18M3 12h18M3 18h18"/>'
+};
+function icon(n, cls){
+  return `<svg class="ico ${cls||''}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]||''}</svg>`;
+}
+
+/* --- utilidades --- */
+const MONTHS = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const DAYS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+const DAYS_SHORT = ['dom','lun','mar','mié','jue','vie','sáb'];
+const DAY_START = 9, DAY_END = 20;
+const GANTT_SPAN = (DAY_END - DAY_START) * 60;
+
+function pad(n){ return String(n).padStart(2,'0'); }
+function iso(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function parseISO(s){ const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); }
+function addDays(d, n){ const x = new Date(d.getTime()); x.setDate(x.getDate()+n); return x; }
+function startOfWeek(d){ const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); const wd = (x.getDay()+6)%7; return addDays(x, -wd); }
+function fmtLong(d){
+  const s = DAYS[d.getDay()] + ' ' + d.getDate() + ' de ' + MONTHS[d.getMonth()];
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+function fmtShort(d){ return DAYS_SHORT[d.getDay()] + ' ' + d.getDate() + ' ' + MONTHS[d.getMonth()].slice(0,3); }
+function fmtUSD(n){ return '$' + Number(n).toLocaleString('en-US', {maximumFractionDigits:0}); }
+function fmtUSD2(n){ return '$' + Number(n).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+function to12(t){ const [h,m] = t.split(':').map(Number); const ap = h >= 12 ? 'pm' : 'am'; const hh = h % 12 === 0 ? 12 : h % 12; return hh + ':' + pad(m) + ' ' + ap; }
+function mins(t){ const [h,m] = t.split(':').map(Number); return h*60+m; }
+function hhmm(T){ return pad(Math.floor(T/60)) + ':' + pad(T%60); }
+function hLabel(h){ const ap = h >= 12 ? 'pm' : 'am'; const hh = h % 12 === 0 ? 12 : h % 12; return hh + ':00 ' + ap; }
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* RNG determinista: los datos son iguales en cada carga del mismo día */
+let _seed = 20261119;
+function rnd(){ _seed = (_seed * 1664525 + 1013904223) % 4294967296; return _seed / 4294967296; }
+function pick(a){ return a[Math.floor(rnd()*a.length)]; }
+function pickW(a){ let r = rnd(), acc = 0; for(const [v,w] of a){ acc += w; if(r <= acc) return v; } return a[a.length-1][0]; }
+
+const TODAY = (() => { const d = new Date(); return new Date(d.getFullYear(), d.getMonth(), d.getDate()); })();
+
+/* --- profesionales --- */
+const PROS = [
+  {id:'lucia', name:'Lucía', role:'Colorista', color:'#B06A3B'},
+  {id:'asistente', name:'Asistente', role:'Apoyo · lavado y secado', color:'#8C7B6B'}
+];
+const proName = id => (PROS.find(p => p.id === id) || {}).name || id;
+
+/* --- catálogo de servicios (precio y duración real en minutos) --- */
+let SERVICES = [
+  {id:'s1', name:'Balayage / iluminación', price:85, dur:150, cat:'Color', pro:'lucia'},
+  {id:'s2', name:'Contouring / degradado', price:75, dur:150, cat:'Color', pro:'lucia'},
+  {id:'s3', name:'Color total (raíz a puntas)', price:55, dur:120, cat:'Color', pro:'lucia'},
+  {id:'s4', name:'Retoque de raíz', price:35, dur:75, cat:'Color', pro:'lucia'},
+  {id:'s5', name:'Corte y peinado', price:20, dur:45, cat:'Corte', pro:'lucia'},
+  {id:'s6', name:'Brushing / secado', price:15, dur:30, cat:'Peinado', pro:'asistente'},
+  {id:'s7', name:'Hidratación profunda', price:30, dur:60, cat:'Tratamiento', pro:'lucia'},
+  {id:'s8', name:'Matización / baño de color', price:25, dur:45, cat:'Color', pro:'lucia'},
+  {id:'s9', name:'Mechas / highlights', price:95, dur:165, cat:'Color', pro:'lucia'},
+  {id:'s10', name:'Corrección de color', price:120, dur:180, cat:'Color', pro:'lucia'}
+];
+const svc = id => SERVICES.find(s => s.id === id);
+const SW = [['s1',13],['s2',9],['s3',13],['s4',15],['s5',13],['s6',5],['s7',10],['s8',9],['s9',7],['s10',6]];
+
+/* --- clientas --- */
+const CLIENT_NAMES = [
+  'María Fernanda Ochoa','Rosa Elvira Chumbi','Ana Lucía Peralta','Sofía Avecillas','Carmen Zhagüi',
+  'Paola Bermeo','Daniela Cabrera','Gabriela Tenesaca','Verónica Llanos','Katherine Piedra',
+  'Silvana Orellana','Juanita Sarmiento','Michelle Ordóñez','Lourdes Quinde','Fernanda Pacheco',
+  'Estefanía Tapia','Brenda Naula','Cecilia Jaramillo','Diana Molina','Ruth Chicaiza',
+  'Tatiana Villalta','Alexandra Sumba','Mariana Barzallo','Nataly Guzmán','Irene Cárdenas'
+];
+const BARRIOS = ['Centro Histórico','El Vergel','San Sebastián','Puertas del Sol','Challuabamba','Yanuncay','Totoracocha','Monay'];
+const SOURCES = ['Instagram','Recomendación','Google','Pasó por el estudio','WhatsApp'];
+const FORMULAS = [
+  {mix:'7.1 + 8.3', ox:'20 vol', time:'35 min'},
+  {mix:'6.0 + 7.43', ox:'20 vol', time:'40 min'},
+  {mix:'8.1 + 9.13', ox:'30 vol', time:'40 min'},
+  {mix:'5.0 + 6.35', ox:'20 vol', time:'45 min'},
+  {mix:'7.3 + 9.3', ox:'20 vol', time:'35 min'},
+  {mix:'6.13 + 8.0', ox:'20 vol', time:'40 min'},
+  {mix:'10.0 + 9.16', ox:'10 vol', time:'25 min'},
+  {mix:'4.0 + 5.62', ox:'20 vol', time:'45 min'},
+  {mix:'9.1 + 8.34', ox:'30 vol', time:'35 min'},
+  {mix:'7.43 + 7.1', ox:'20 vol', time:'40 min'}
+];
+const LASTWORK = [
+  'Balayage de raíz a puntas, matizado con 9.16. Quedó luminoso y parejo, sin dañar la fibra.',
+  'Retoque de raíz en tono 7.1 y matización de medios a puntas. Sin resequedad.',
+  'Color total en 6.0 con reflejo cálido. Se hidrató al final del servicio.',
+  'Mechas finas enmarcando el rostro, tono 8.3. Resultado natural.',
+  'Corrección de un rubio cobrizo previo; se llevó a un 9.1. En dos tiempos.',
+  'Contouring suave para iluminar el rostro. Se trabajó con 20 vol.',
+  'Baño de color para refrescar el tono entre balayages.',
+  'Raíz en 5.0 y perfilado de puntas. Se recomendó hidratación mensual.'
+];
+
+const CLIENTS = CLIENT_NAMES.map((name, i) => {
+  const first = name.split(' ')[0];
+  const last = name.split(' ').slice(-1)[0].toLowerCase().replace(/[áéíóúñ]/g, c => ({á:'a',é:'e',í:'i',ó:'o',ú:'u',ñ:'n'}[c]));
+  return {
+    id:'c'+(i+1),
+    name,
+    phone:'+593 9' + (6 + (i%4)) + ' ' + (100 + i*7).toString().padStart(3,'0') + ' ' + (4200 + i*137).toString().slice(0,4),
+    email: first.toLowerCase().replace(/[áéíóúñ]/g, c => ({á:'a',é:'e',í:'i',ó:'o',ú:'u',ñ:'n'}[c])) + '.' + last + '@correo.com',
+    since: (2020 + (i % 5)) + '',
+    barrio: BARRIOS[i % BARRIOS.length],
+    source: SOURCES[i % SOURCES.length],
+    whatsapp: i % 5 !== 4,
+    formula: FORMULAS[i % FORMULAS.length],
+    lastWork: LASTWORK[i % LASTWORK.length],
+    notes: i % 4 === 0 ? ['Cuero cabelludo sensible: usar oxidante de 10 vol cuando se pueda.'] : (i % 6 === 0 ? ['Prefiere citas después del trabajo, a partir de las 16:00.'] : (i % 9 === 0 ? ['Cabello con decoloración previa: cuidar el tiempo de exposición.'] : [])),
+    retouch: null,
+    packs: []
+  };
+});
+const cli = id => CLIENTS.find(c => c.id === id);
+
+/* --- citas --- */
+const APPOINTMENTS = [];
+let _aptId = 1;
+function addApt(clientId, serviceId, proId, dateISO, time, status){
+  const s = svc(serviceId);
+  APPOINTMENTS.push({
+    id:'a'+(_aptId++),
+    client: clientId, service: serviceId, pro: proId || s.pro,
+    date: dateISO, time, dur: s.dur, price: s.price, status
+  });
+}
+function nowMins(){ const d = new Date(); return d.getHours()*60 + d.getMinutes(); }
+
+/* Citas de hoy: la agenda se ve llena apenas se entra */
+const todayPlan = [
+  ['c1','s4','09:00'],
+  ['c5','s1','10:30'],
+  ['c9','s5','13:15'],
+  ['c3','s3','14:00'],
+  ['c7','s8','16:15'],
+  ['c12','s9','17:15']
+];
+todayPlan.forEach(([c,s,t]) => {
+  const m = mins(t);
+  let status = 'confirmada';
+  if(m < nowMins() - 20) status = rnd() > 0.12 ? 'atendida' : 'confirmada';
+  else if(mins(t) < nowMins() + 90) status = 'confirmada';
+  else status = rnd() < 0.7 ? 'confirmada' : 'pendiente';
+  addApt(c, s, 'lucia', iso(TODAY), t, status);
+});
+/* la ayudante hace un secado hoy en paralelo */
+addApt('c15', 's6', 'asistente', iso(TODAY), '13:15', nowMins() > 800 ? 'atendida' : 'confirmada');
+
+/* Citas de los demás días del mes */
+function scheduleDay(d, off){
+  let t = 9*60 + pick([0,0,30,30,60]);
+  const nd = 1 + (rnd() < 0.42 ? 1 : 0) + (rnd() < 0.18 ? 1 : 0);
+  for(let k = 0; k < nd; k++){
+    const sid = pickW(SW);
+    const s = svc(sid);
+    if(t + s.dur > DAY_END*60) break;
+    let status;
+    if(off < 0) status = rnd() < 0.86 ? 'atendida' : 'cancelada';
+    else status = rnd() < 0.7 ? 'confirmada' : 'pendiente';
+    addApt(pick(CLIENTS).id, sid, s.pro, iso(d), hhmm(t), status);
+    t += s.dur + pick([0,15,15,30]);
+  }
+  if(rnd() < 0.45){
+    const t2 = 9*60 + Math.floor(rnd()*8)*60 + pick([0,30]);
+    addApt(pick(CLIENTS).id, pick(['s6','s6','s5']), 'asistente', iso(d), hhmm(t2), off < 0 ? 'atendida' : (rnd() < 0.7 ? 'confirmada' : 'pendiente'));
+  }
+}
+
+const _y = TODAY.getFullYear(), _m = TODAY.getMonth();
+const _daysInMonth = new Date(_y, _m+1, 0).getDate();
+for(let dd = 1; dd <= _daysInMonth; dd++){
+  const d = new Date(_y, _m, dd);
+  if(d.getDay() === 0) continue;              // domingo cerrado
+  if(dd === TODAY.getDate()) continue;         // hoy ya está planificado
+  scheduleDay(d, dd - TODAY.getDate());
+}
+/* últimos días del mes anterior, para las últimas 4 semanas de informes */
+const _prevDays = new Date(_y, _m, 0).getDate();
+for(let dd = _prevDays - 11; dd <= _prevDays; dd++){
+  const d = new Date(_y, _m-1, dd);
+  if(d.getDay() === 0) continue;
+  scheduleDay(d, -999);
+}
+/* primeros días del mes siguiente, para navegar hacia adelante */
+for(let dd = 1; dd <= 10; dd++){
+  const d = new Date(_y, _m+1, dd);
+  if(d.getDay() === 0) continue;
+  scheduleDay(d, 999);
+}
+APPOINTMENTS.sort((a,b) => (a.date + a.time).localeCompare(b.date + b.time));
+
+/* --- retoques (cuándo toca igualar la raíz) --- */
+const RETOUCH_OFFSETS = {0:-8, 2:4, 3:9, 5:15, 7:-3, 10:6, 12:12, 15:18, 17:25, 20:7, 22:40, 24:-12};
+Object.entries(RETOUCH_OFFSETS).forEach(([idx, off]) => {
+  const c = CLIENTS[+idx];
+  if(!c) return;
+  c.retouch = {
+    due: addDays(TODAY, off),
+    last: addDays(TODAY, off - 42),
+    weeks: Math.round(42/7)
+  };
+});
+
+/* --- historial de visitas (para la ficha) --- */
+const VISITS = {};
+function ensureVisits(id){
+  if(VISITS[id]) return VISITS[id];
+  const list = APPOINTMENTS.filter(a => a.client === id && a.status === 'atendida' && a.date <= iso(TODAY))
+    .map(a => ({date: a.date, service: a.service, pro: a.pro, price: a.price, paid: true}));
+  const extra = 2 + Math.floor(rnd()*4);
+  for(let i = 0; i < extra; i++){
+    const d = addDays(TODAY, -(40 + Math.floor(rnd()*300)));
+    const s = pick(SERVICES);
+    if(d.getDay() === 0) continue;
+    list.push({date: iso(d), service: s.id, pro: pick(PROS).id, price: s.price, paid: true});
+  }
+  list.sort((a,b) => b.date.localeCompare(a.date));
+  VISITS[id] = list;
+  return list;
+}
+
+/* --- packs --- */
+const PACKS = [
+  {id:'p1', client:'c1', name:'Pack 3 balayage', total:3, used:2, exp: addDays(TODAY, 48), service:'s1'},
+  {id:'p2', client:'c5', name:'Pack raíz + hidratación', total:4, used:1, exp: addDays(TODAY, 21), service:'s4'},
+  {id:'p3', client:'c9', name:'Pack 3 matizaciones', total:3, used:3, exp: addDays(TODAY, -6), service:'s8'},
+  {id:'p4', client:'c12', name:'Pack corte + brushing', total:5, used:4, exp: addDays(TODAY, 12), service:'s5'},
+  {id:'p5', client:'c3', name:'Pack hidratación x4', total:4, used:2, exp: addDays(TODAY, 95), service:'s7'},
+  {id:'p6', client:'c18', name:'Pack color total x3', total:3, used:1, exp: addDays(TODAY, 120), service:'s3'}
+];
+PACKS.forEach(p => { const c = cli(p.client); if(c) c.packs.push(p); });
+
+/* --- pagos del mes --- */
+const PAYMENTS = [];
+let _payId = 1;
+function addPay(clientId, serviceId, dateISO, amount, method, status, proId){
+  PAYMENTS.push({id:'y'+(_payId++), client:clientId, service:serviceId, date:dateISO, amount, method, status, pro: proId});
+}
+const METHOD_SEQ = ['Efectivo','Efectivo','Transferencia','Efectivo','Tarjeta','Transferencia','Efectivo','Tarjeta','Efectivo','Transferencia'];
+let _methodIdx = 0;
+function nextMethod(){ const m = METHOD_SEQ[_methodIdx % METHOD_SEQ.length]; _methodIdx++; return m; }
+APPOINTMENTS.filter(a => a.status === 'atendida').forEach(a => {
+  const d = parseISO(a.date);
+  if(d.getFullYear() !== _y || d.getMonth() !== _m) return;
+  const isRecent = d.getTime() >= addDays(TODAY, -2).getTime();
+  addPay(a.client, a.service, a.date, a.price, nextMethod(), isRecent && rnd() < 0.4 ? 'pendiente' : 'pagado', a.pro);
+});
+PAYMENTS.sort((a,b) => (b.date).localeCompare(a.date));
+
+/* --- bandeja de mensajes (recordatorios, retoques y confirmaciones) --- */
+const THREADS = [
+  {id:'t1', client:'c1', unread:1, msgs:[
+    {from:'out', auto:true, text:'Hola María Fernanda, le saluda Lucía Patiño, especialista en color. Le recordamos su cita de hoy a las 9:00 am para retoque de raíz. Responda SÍ para confirmar o NO para reprogramar.', t:'Hoy 07:20'},
+    {from:'in', text:'Sí, confirmo. Ahí estaré.', t:'Hoy 07:35'},
+    {from:'out', auto:true, text:'Ya pasaron 6 semanas de su último color. Si desea, al salir de la cita reservamos el próximo retoque para que no se le junte con las fiestas.', t:'Hoy 07:36'}
+  ]},
+  {id:'t2', client:'c5', unread:0, msgs:[
+    {from:'out', auto:true, text:'Hola Paola, le recordamos su balayage de hoy a las 10:30 am con Lucía. Nos ayuda mucho que llegue con el cabello seco y sin productos.', t:'Hoy 08:05'},
+    {from:'in', text:'Perfecto, ya voy en camino.', t:'Hoy 08:40'},
+    {from:'out', auto:true, text:'Gracias por su visita. Le quedan 2 sesiones de su Pack 3 balayage y vence el ' + (addDays(TODAY,48).getDate()) + ' de ' + MONTHS[addDays(TODAY,48).getMonth()] + '.', t:'Hoy 13:05'}
+  ]},
+  {id:'t3', client:'c12', unread:1, msgs:[
+    {from:'out', auto:true, text:'Hola Juanita, ¡ya toca retocar la raíz! Su último color fue hace 7 semanas. Le reservamos un espacio cuando guste; su Pack corte + brushing también está por vencer.', t:'Ayer 15:00'},
+    {from:'in', text:'Hola Lucía, sí por favor. ¿Tiene algo el viernes en la tarde?', t:'Ayer 18:22'}
+  ]},
+  {id:'t4', client:'c9', unread:0, msgs:[
+    {from:'out', auto:true, text:'Hola Verónica, su Pack 3 matizaciones venció hace unos días. Podemos reactivarlo con una sesión de cortesía si agenda esta semana.', t:'Ayer 11:00'},
+    {from:'in', text:'Ay, no me di cuenta. ¿Tiene espacio el sábado?', t:'Ayer 11:26'},
+    {from:'out', text:'Sí, el sábado. Se lo dejo reservado y le confirmo por aquí.', t:'Ayer 11:30'},
+    {from:'in', text:'Listo, gracias.', t:'Ayer 11:31'}
+  ]},
+  {id:'t5', client:'c7', unread:0, msgs:[
+    {from:'out', auto:true, text:'Hola Daniela, le recordamos su cita de hoy a las 16:15 para matización. Responda SÍ para confirmar.', t:'Hoy 08:05'},
+    {from:'in', text:'Confirmado. ¿Puedo pagar con transferencia?', t:'Hoy 08:30'},
+    {from:'out', text:'Claro que sí. Le envío los datos al finalizar.', t:'Hoy 08:33'}
+  ]},
+  {id:'t6', client:'c2', unread:0, msgs:[
+    {from:'in', text:'Buenas tardes, quiero hacerme un balayage para fin de mes. ¿Cuánto está y cuánto dura?', t:'Lun 16:40'},
+    {from:'out', text:'Hola Rosa, el balayage tiene un valor de $85 e incluye iluminación y matización. El servicio dura alrededor de 2 horas y media. ¿Le reservo una fecha?', t:'Lun 16:52'},
+    {from:'in', text:'Sí, por favor, cualquier día después de las 4.', t:'Lun 17:05'},
+    {from:'out', text:'Le dejo reservado un espacio esta semana por la tarde y le confirmo por aquí el día anterior.', t:'Lun 17:10'}
+  ]},
+  {id:'t7', client:'c20', unread:0, msgs:[
+    {from:'out', auto:true, text:'Hola Ruth, ¿cómo le quedó el color de la última visita? Nos encantaría saber su opinión.', t:'Ayer 17:30'},
+    {from:'in', text:'Quedó hermoso, ya me preguntaron dónde me lo hice.', t:'Ayer 19:02'},
+    {from:'out', text:'¡Qué bueno! Si nos deja una reseña en Google nos ayuda muchísimo.', t:'Ayer 19:10'},
+    {from:'in', text:'Claro, hoy la escribo.', t:'Ayer 19:11'}
+  ]},
+  {id:'t8', client:'c15', unread:0, msgs:[
+    {from:'out', auto:true, text:'Hola Fernanda, le recordamos su cita de hoy para el secado con la asistente a las 13:15. Responda SÍ para confirmar.', t:'Hoy 08:02'},
+    {from:'in', text:'Sí, confirmo.', t:'Hoy 08:19'}
+  ]},
+  {id:'t9', client:'c3', unread:0, msgs:[
+    {from:'out', auto:true, text:'Hola Sofía, le recordamos su color total de hoy a las 14:00 con Lucía. Responda SÍ para confirmar.', t:'Hoy 08:03'},
+    {from:'in', text:'Hola, estoy con gripe. ¿Me puede mover para la otra semana?', t:'Hoy 09:47'},
+    {from:'out', text:'Claro, cuídese. Le propongo el martes por la mañana. ¿Le sirve?', t:'Hoy 09:52'}
+  ]}
+];
+/* ============================================================
+   Estado y navegación
+   ============================================================ */
+const state = {
+  section: 'escritorio',
+  agendaMode: 'dia',
+  agendaDate: new Date(TODAY.getTime()),
+  clientId: null,
+  clientQ: '',
+  threadId: 't1',
+  showChat: false,
+  userMenu: false
+};
+const SECTIONS = [
+  {id:'escritorio', label:'Escritorio', icon:'home'},
+  {id:'agenda', label:'Agenda', icon:'calendar'},
+  {id:'clientas', label:'Clientas', icon:'users'},
+  {id:'mensajes', label:'Mensajes', icon:'chat'},
+  {id:'pagos', label:'Pagos', icon:'cash'},
+  {id:'informes', label:'Informes', icon:'chart'},
+  {id:'ajustes', label:'Ajustes', icon:'gear'}
+];
+const TITLES = {
+  escritorio:'Escritorio', agenda:'Agenda', clientas:'Clientas', mensajes:'Mensajes',
+  pagos:'Pagos', informes:'Informes', ajustes:'Ajustes', ficha:'Ficha de la clienta'
+};
+const PUBLIC_URL = 'https://clientes-demo-luciapatino.rddxeh.easypanel.host/';
+
+function unreadTotal(){ return THREADS.reduce((n, t) => n + (t.unread || 0), 0); }
+function initials(name){ return name.split(' ').filter(Boolean).slice(0,2).map(w => w[0]).join('').toUpperCase(); }
+function shortName(name){ return name.split(' ').filter(Boolean).slice(0,2).join(' '); }
+
+function enterApp(){
+  document.getElementById('login').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  document.getElementById('tbDate').textContent = fmtLong(TODAY) + ' · ' + TODAY.getFullYear();
+  document.getElementById('chipToday').textContent = fmtLong(TODAY);
+  renderNav();
+  go('escritorio');
+  toast('Modo demostración activo: los datos son de ejemplo.');
+  window.scrollTo(0,0);
+}
+
+function renderNav(){
+  const nav = document.getElementById('nav');
+  const meta = document.getElementById('sideFootMeta');
+  if(meta){
+    const hoy = aptsOn(iso(TODAY)).filter(a => a.status !== 'cancelada').length;
+    const ret = retouchesDue().length;
+    meta.textContent = hoy + ' citas hoy · ' + ret + ' retoques por vencer';
+  }
+  nav.innerHTML = '<div class="side-label">Operación diaria</div>' + SECTIONS.map(s => {
+    const act = (state.section === s.id || (s.id === 'clientas' && state.section === 'ficha')) ? 'active' : '';
+    const badge = s.id === 'mensajes' && unreadTotal() ? `<span class="nav-badge">${unreadTotal()}</span>` : '';
+    return `<button class="nav-item ${act}" onclick="go('${s.id}')">${icon(s.icon)}<span>${s.label}</span>${badge}</button>`;
+  }).join('') + `<div class="side-label" style="margin-top:10px">Sitio público</div>
+  <a class="nav-item" href="${PUBLIC_URL}" target="_blank" rel="noopener">${icon('external')}<span>Ver la web pública</span></a>`;
+}
+
+function go(sec){
+  state.section = sec;
+  state.userMenu = false;
+  const root = document.getElementById('view');
+  root.innerHTML = '';
+  document.getElementById('tbTitle').textContent = TITLES[sec] || sec;
+  document.querySelectorAll('.um-menu').forEach(n => n.remove());
+  renderNav();
+  toggleSide(false);
+  if(sec === 'escritorio') viewEscritorio(root);
+  else if(sec === 'agenda') viewAgenda(root);
+  else if(sec === 'clientas') viewClientas(root);
+  else if(sec === 'ficha') viewFicha(root);
+  else if(sec === 'mensajes') viewMensajes(root);
+  else if(sec === 'pagos') viewPagos(root);
+  else if(sec === 'informes') viewInformes(root);
+  else if(sec === 'ajustes') viewAjustes(root);
+  window.scrollTo(0,0);
+}
+
+function toggleSide(open){
+  const sb = document.getElementById('sidebar');
+  if(open) sb.classList.add('open');
+  else sb.classList.remove('open');
+}
+function toggleUserMenu(e){
+  e.stopPropagation();
+  const exist = document.querySelector('.um-menu');
+  if(exist) { exist.remove(); return; }
+  const m = document.createElement('div');
+  m.className = 'user-menu um-menu';
+  m.innerHTML = `<div class="um-head"><strong>Lucía Patiño</strong><span>Especialista en Color · lucia@luciapatino.com</span></div>
+    <a href="${PUBLIC_URL}" target="_blank" rel="noopener">${icon('external','ico-sm')} Ver la web pública</a>
+    <button onclick="go('ajustes')">${icon('gear','ico-sm')} Ajustes del estudio</button>
+    <hr>
+    <button onclick="logout()">${icon('logout','ico-sm')} Salir del sistema</button>`;
+  document.body.appendChild(m);
+}
+function logout(){
+  document.querySelectorAll('.um-menu').forEach(n => n.remove());
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('login').classList.remove('hidden');
+  state.section = 'escritorio';
+  window.scrollTo(0,0);
+}
+document.addEventListener('click', () => { document.querySelectorAll('.um-menu').forEach(n => n.remove()); });
+
+/* --- datos derivados --- */
+function aptsOn(d){ return APPOINTMENTS.filter(a => a.date === d).sort((a,b) => a.time.localeCompare(b.time)); }
+function aptsRange(from, to){ return APPOINTMENTS.filter(a => a.date >= from && a.date <= to); }
+const STATUS_LABEL = {confirmada:'Confirmada', pendiente:'Pendiente', atendida:'Atendida', cancelada:'Cancelada'};
+function statusPill(st){
+  const cls = {confirmada:'pill-green', pendiente:'pill-amber', atendida:'pill-blue', cancelada:'pill-red'}[st] || 'pill-gray';
+  return `<span class="pill ${cls}">${STATUS_LABEL[st] || st}</span>`;
+}
+function bookedMins(dISO){
+  return aptsOn(dISO).filter(a => a.status !== 'cancelada').reduce((s,a) => s + a.dur, 0);
+}
+function occupancy(dISO){
+  const lucia = aptsOn(dISO).filter(a => a.status !== 'cancelada' && a.pro === 'lucia').reduce((s,a) => s + a.dur, 0);
+  return Math.min(100, Math.round(lucia / GANTT_SPAN * 100));
+}
+function daysUntil(d){ return Math.round((d.getTime() - TODAY.getTime()) / 86400000); }
+function retouchesDue(){
+  return CLIENTS.filter(c => c.retouch && daysUntil(c.retouch.due) <= 14)
+    .sort((a,b) => a.retouch.due - b.retouch.due);
+}
+function paidMonth(){
+  return PAYMENTS.filter(p => p.status === 'pagado' && parseISO(p.date).getMonth() === TODAY.getMonth() && parseISO(p.date).getFullYear() === TODAY.getFullYear())
+    .reduce((s,p) => s + p.amount, 0);
+}
+function pendingTotal(){ return PAYMENTS.filter(p => p.status === 'pendiente').reduce((s,p) => s + p.amount, 0); }
+function todayRevenue(){ return PAYMENTS.filter(p => p.date === iso(TODAY) && p.status === 'pagado').reduce((s,p) => s + p.amount, 0); }
+
+/* --- toast / modal --- */
+let _toastTimer;
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.innerHTML = icon('check','ico-sm') + '<span>' + esc(msg) + '</span>';
+  t.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => t.classList.remove('show'), 3600);
+}
+function openModal(html, opts){
+  const root = document.getElementById('modalRoot');
+  root.innerHTML = `<div class="overlay" onclick="if(event.target===this) closeModal()"><div class="modal">${html}</div></div>`;
+  document.body.style.overflow = 'hidden';
+  if(opts && opts.focus) setTimeout(() => { const el = document.getElementById(opts.focus); if(el) el.focus(); }, 60);
+}
+function closeModal(){
+  document.getElementById('modalRoot').innerHTML = '';
+  document.body.style.overflow = '';
+}
+
+/* ============================================================
+   ESCRITORIO
+   ============================================================ */
+function viewEscritorio(root){
+  const todayApts = aptsOn(iso(TODAY)).filter(a => a.status !== 'cancelada');
+  const booked = bookedMins(iso(TODAY));
+  const hoursBooked = (booked/60);
+  const occ = occupancy(iso(TODAY));
+  const upcoming = APPOINTMENTS.filter(a => a.date === iso(TODAY) && a.status !== 'cancelada' && a.status !== 'atendida')
+    .sort((a,b) => a.time.localeCompare(b.time));
+  const nextClient = upcoming[0] || aptsOn(iso(addDays(TODAY,1))).filter(a => a.status !== 'cancelada')[0];
+  const tomorrow = aptsOn(iso(addDays(TODAY,1)));
+  const pendingConf = APPOINTMENTS.filter(a => a.status === 'pendiente' && a.date >= iso(TODAY)).length;
+  const ret = retouchesDue();
+  const expiring = PACKS.filter(p => { const dd = daysUntil(p.exp); return p.used < p.total && dd <= 45; }).sort((a,b)=>a.exp-b.exp);
+  const monthTotal = paidMonth();
+  const hora = new Date().getHours();
+  const saludo = hora < 12 ? 'Buenos días' : (hora < 19 ? 'Buenas tardes' : 'Buenas noches');
+
+  root.innerHTML = `
+  <div class="page-head">
+    <div>
+      <h1>${saludo}, Lucía</h1>
+      <div class="sub">${fmtLong(TODAY)} · ${todayApts.length} citas en agenda, ${upcoming.length} por atender. Ocupación ${occ}%.</div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-ghost" onclick="go('informes')">${icon('chart')} Ver informes</button>
+      <button class="btn btn-primary" onclick="newAppointment()">${icon('plus')} Nueva cita</button>
+    </div>
+  </div>
+
+  <div class="grid kpis">
+    <div class="card kpi">
+      <div class="k-top"><span class="k-ico">${icon('calendar')}</span><span class="k-lbl">Citas de hoy</span></div>
+      <div class="k-val">${todayApts.length}</div>
+      <div class="k-sub">${tomorrow.length} agendadas para mañana</div>
+    </div>
+    <div class="card kpi">
+      <div class="k-top"><span class="k-ico">${icon('clock')}</span><span class="k-lbl">Horas ocupadas hoy</span></div>
+      <div class="k-val">${hoursBooked.toFixed(1)} h</div>
+      <div class="k-sub"><span class="trend">${icon('up','ico-sm')} ${occ}%</span> de la jornada (11 h)</div>
+    </div>
+    <div class="card kpi">
+      <div class="k-top"><span class="k-ico">${icon('cash')}</span><span class="k-lbl">Ingresos de hoy</span></div>
+      <div class="k-val">${fmtUSD(todayRevenue())}</div>
+      <div class="k-sub">${PAYMENTS.filter(p=>p.date===iso(TODAY)).length} cobros registrados</div>
+    </div>
+    <div class="card kpi">
+      <div class="k-top"><span class="k-ico">${icon('droplet')}</span><span class="k-lbl">Próxima clienta</span></div>
+      <div class="k-val" style="font-size:17px;line-height:1.25;letter-spacing:-.01em">${nextClient ? esc(shortName(cli(nextClient.client).name)) : '—'}</div>
+      <div class="k-sub">${nextClient ? to12(nextClient.time) + ' · ' + esc(svc(nextClient.service).name) : 'sin citas próximas'}</div>
+    </div>
+  </div>
+
+  <div class="dcols">
+    <div class="card">
+      <div class="card-head">
+        <h3>Agenda de hoy</h3>
+        <span class="hint">${todayApts.length} citas · ${hoursBooked.toFixed(1)} h ocupadas</span>
+        <div class="actions"><button class="link-btn" onclick="go('agenda')">Ver agenda completa</button></div>
+      </div>
+      <div>${todayApts.length ? todayApts.map(aptRow).join('') : '<div class="empty">No hay citas para hoy.</div>'}</div>
+    </div>
+
+    <div style="display:grid; gap:16px; align-content:start">
+      <div class="card">
+        <div class="card-head"><h3>Avisos</h3><span class="hint">${unreadTotal() + ret.length + 2}</span></div>
+        <button class="alert-row" onclick="go('mensajes')">
+          <span class="a-ico a-copper">${icon('chat','ico-sm')}</span>
+          <span class="a-main"><span class="a-t">${unreadTotal()} mensajes esperan respuesta</span><span class="a-s">Confirmaciones y reprogramaciones de clientas</span></span>
+        </button>
+        <button class="alert-row" onclick="go('clientas')">
+          <span class="a-ico a-amber">${icon('droplet','ico-sm')}</span>
+          <span class="a-main"><span class="a-t">${ret.length} retoques por vencer</span><span class="a-s">Ya toca igualar la raíz de estas clientas</span></span>
+        </button>
+        <button class="alert-row" onclick="go('agenda')">
+          <span class="a-ico a-copper">${icon('bell','ico-sm')}</span>
+          <span class="a-main"><span class="a-t">Recordatorios por enviar</span><span class="a-s">${tomorrow.length} citas de mañana · se envían ${SETTINGS.reminderHours} h antes</span></span>
+        </button>
+        <button class="alert-row" onclick="go('pagos')">
+          <span class="a-ico a-red">${icon('wallet','ico-sm')}</span>
+          <span class="a-main"><span class="a-t">${fmtUSD(pendingTotal())} por cobrar</span><span class="a-s">${PAYMENTS.filter(p=>p.status==='pendiente').length} cobros pendientes</span></span>
+        </button>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Retoques que vencen</h3><div class="actions"><button class="link-btn" onclick="go('clientas')">Ver clientas</button></div></div>
+        <div>${ret.slice(0,3).map(c => {
+          const dd = daysUntil(c.retouch.due);
+          return `<button class="row" onclick="openClient('${c.id}')">
+            <span class="avatar" style="width:32px;height:32px;flex:0 0 32px;font-size:10.5px">${initials(c.name)}</span>
+            <span class="r-main"><span class="r-t">${esc(c.name)}</span><span class="r-s">Último color: ${fmtShort(c.retouch.last)}</span></span>
+            <span class="r-end"><span class="pill ${dd < 0 ? 'pill-red' : 'pill-amber'}">${dd < 0 ? 'Vencido hace ' + (-dd) + ' d' : 'en ' + dd + ' d'}</span></span>
+          </button>`;
+        }).join('') || '<div class="empty">Sin retoques por vencer.</div>'}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dcols-3">
+    <div class="card">
+      <div class="card-head"><h3>Ingresos de los últimos meses</h3><span class="hint">USD</span><div class="actions"><button class="link-btn" onclick="go('informes')">Detalle</button></div></div>
+      <div class="card-pad">
+        <div class="months">${monthSeries().map(m => `<div class="m"><span class="mv">${fmtUSD(m.v)}</span><span class="mb" style="height:${Math.round(m.v / Math.max(...monthSeries().map(x=>x.v)) * 100)}%"></span><span class="ml">${m.l}</span></div>`).join('')}</div>
+        <div style="display:flex; justify-content:space-between; font-size:11.5px; color:var(--muted); margin-top:12px">
+          <span>Promedio mensual <strong style="color:var(--text)">${fmtUSD(Math.round(monthSeries().reduce((s,m)=>s+m.v,0)/monthSeries().length))}</strong></span>
+          <span>Este mes <strong style="color:#8A4E22">${fmtUSD(monthTotal)}</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>Servicios más pedidos del mes</h3><div class="actions"><button class="link-btn" onclick="go('informes')">Ver todo</button></div></div>
+      <div class="card-pad">${topServices(5).map(s => `
+        <div class="hbar">
+          <div class="hbar-top"><span class="n">${esc(s.name)}</span><span class="v">${s.count} citas</span></div>
+          <div class="hbar-track"><div class="hbar-fill" style="width:${Math.round(s.count / topServices(5)[0].count * 100)}%"></div></div>
+        </div>`).join('')}</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="card-head"><h3>Últimos cobros</h3><div class="actions"><button class="link-btn" onclick="go('pagos')">Ver todos los pagos</button></div></div>
+    <div class="table-wrap"><table class="t">
+      <thead><tr><th>Fecha</th><th>Clienta</th><th>Servicio</th><th>Método</th><th class="num">Monto</th><th>Estado</th></tr></thead>
+      <tbody>${PAYMENTS.slice(0,5).map(p => `<tr>
+        <td class="mini">${fmtShort(parseISO(p.date))}</td>
+        <td><span class="t-name">${esc(cli(p.client).name)}</span></td>
+        <td>${esc(svc(p.service).name)}</td>
+        <td class="mini">${p.method}</td>
+        <td class="num">${fmtUSD2(p.amount)}</td>
+        <td>${p.status === 'pagado' ? '<span class="pill pill-green">Pagado</span>' : '<span class="pill pill-amber">Pendiente</span>'}</td>
+      </tr>`).join('')}</tbody>
+    </table></div>
+  </div>`;
+}
+
+function aptRow(a){
+  const c = cli(a.client);
+  const s = svc(a.service);
+  return `<button class="row" onclick="openApt('${a.id}')">
+    <span class="time-box"><span class="h">${to12(a.time).split(' ')[0]}</span><span class="ampm">${to12(a.time).split(' ')[1]}</span></span>
+    <span class="avatar">${initials(c.name)}</span>
+    <span class="r-main"><span class="r-t">${esc(c.name)}</span><span class="r-s">${esc(s.name)} · ${s.dur} min · ${proName(a.pro)}</span></span>
+    <span class="r-end">${statusPill(a.status)}</span>
+  </button>`;
+}
+
+function monthSeries(){
+  const base = paidMonth() || 1600;
+  const out = [];
+  for(let i = 5; i >= 0; i--){
+    const d = new Date(TODAY.getFullYear(), TODAY.getMonth() - i, 1);
+    let v;
+    if(i === 0) v = base;
+    else { const f = 0.6 + (5 - i) * 0.08; v = Math.round(base * f / 10) * 10 + ((i * 73) % 90); }
+    out.push({l: MONTHS[d.getMonth()].slice(0,3), v});
+  }
+  return out;
+}
+function topServices(n){
+  const counts = {};
+  APPOINTMENTS.filter(a => parseISO(a.date).getMonth() === TODAY.getMonth() && a.status !== 'cancelada')
+    .forEach(a => { counts[a.service] = (counts[a.service] || 0) + 1; });
+  return Object.entries(counts).map(([id, count]) => ({id, count, name: svc(id).name, price: svc(id).price}))
+    .sort((a,b) => b.count - a.count).slice(0, n || 99);
+}
+
+/* ============================================================
+   AGENDA  (barra de ancho = duración del servicio)
+   ============================================================ */
+function viewAgenda(root){
+  const d = state.agendaDate;
+  const weekStart = startOfWeek(d);
+  root.innerHTML = `
+  <div class="page-head">
+    <div><h1>Agenda</h1><div class="sub">Cada cita ocupa el tiempo real de su servicio: un balayage llena media jornada, un corte apenas una franja.</div></div>
+    <div class="actions"><button class="btn btn-primary" onclick="newAppointment('${iso(d)}')">${icon('plus')} Nueva cita</button></div>
+  </div>
+  <div class="agenda-bar">
+    <div class="seg">
+      <button class="${state.agendaMode==='semana'?'on':''}" onclick="setAgendaMode('semana')">Semana</button>
+      <button class="${state.agendaMode==='dia'?'on':''}" onclick="setAgendaMode('dia')">Día</button>
+    </div>
+    <div class="date-nav">
+      <button onclick="shiftAgenda(-1)" aria-label="Anterior">${icon('arrowLeft','ico-sm')}</button>
+      <span class="cur">${state.agendaMode === 'semana'
+        ? weekStart.getDate() + ' ' + MONTHS[weekStart.getMonth()].slice(0,3) + ' – ' + addDays(weekStart,6).getDate() + ' ' + MONTHS[addDays(weekStart,6).getMonth()].slice(0,3)
+        : fmtLong(d)}</span>
+      <button onclick="shiftAgenda(1)" aria-label="Siguiente">${icon('arrowRight','ico-sm')}</button>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="goToday()">Hoy</button>
+    <div style="margin-left:auto" class="legend">
+      <span><i class="dot" style="background:#B06A3B"></i> Confirmada</span>
+      <span><i class="dot" style="background:#D9A046"></i> Pendiente</span>
+      <span><i class="dot" style="background:#8FA79B"></i> Atendida</span>
+      <span><i class="dot" style="background:#C58A92"></i> Cancelada</span>
+    </div>
+  </div>
+  <div>${state.agendaMode === 'semana' ? weekView(weekStart) : dayView(d)}</div>`;
+}
+function setAgendaMode(m){ state.agendaMode = m; viewAgenda(document.getElementById('view')); }
+function shiftAgenda(dir){
+  state.agendaDate = addDays(state.agendaDate, state.agendaMode === 'semana' ? 7*dir : dir);
+  viewAgenda(document.getElementById('view'));
+}
+function goToday(){ state.agendaDate = new Date(TODAY.getTime()); viewAgenda(document.getElementById('view')); }
+
+/* --- vista de día: gantt horizontal, ancho proporcional a la duración --- */
+function dayView(d){
+  const dISO = iso(d);
+  const apts = aptsOn(dISO);
+  const hours = []; for(let h = DAY_START; h < DAY_END; h++) hours.push(h);
+  const pct = m => (m - DAY_START*60) / GANTT_SPAN * 100;
+
+  const head = `<div class="gantt-head"><div class="gantt-lbl-w"></div><div class="gantt-scale">${hours.map(h => `<span class="hs" style="left:${pct(h*60)}%">${hLabel(h)}</span>`).join('')}</div></div>`;
+
+  const lanes = PROS.map(p => {
+    const list = apts.filter(a => a.pro === p.id);
+    const grid = hours.map(h => `<span class="gl" style="left:${pct(h*60)}%"></span>`).join('');
+    const bars = list.map(a => {
+      const left = pct(mins(a.time));
+      const w = a.dur / GANTT_SPAN * 100;
+      const tiny = w < 7.5;
+      const c = cli(a.client), s = svc(a.service);
+      return `<button class="gbar st-${a.status} ${tiny?'tiny':''}" style="left:${left}%;width:${w}%"
+        title="${esc(c.name)} · ${esc(s.name)} · ${a.dur} min · ${to12(a.time)}"
+        onclick="openApt('${a.id}')">
+        ${tiny ? `<span class="gt">${to12(a.time)}</span>`
+        : `<span class="gt">${to12(a.time)} · ${a.dur}m</span>
+           <span class="gn">${esc(shortName(c.name))}</span>
+           <span class="gs">${esc(s.name)}</span>`}
+      </button>`;
+    }).join('');
+    return `<div class="gantt-lane">
+      <div class="lane-lbl">${p.name}<span class="role">${p.role}</span></div>
+      <div class="lane-track"><div class="lane-grid">${grid}</div>${bars}${list.length ? '' : '<span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--muted-2)">Sin citas</span>'}</div>
+    </div>`;
+  }).join('');
+
+  const active = apts.filter(a => a.status !== 'cancelada');
+  return `<div class="gantt-scroll"><div class="gantt">${head}${lanes}</div></div>
+  <div class="legend" style="margin-top:12px">
+    <span><strong style="color:var(--text)">${active.length}</strong> citas · ${(bookedMins(dISO)/60).toFixed(1)} h ocupadas · ocupación ${occupancy(dISO)}%</span>
+    <span>Ingresos estimados: <strong style="color:var(--text)">${fmtUSD(active.reduce((s,a)=>s+a.price,0))}</strong></span>
+    <span class="mini">El ancho de cada barra es proporcional a la duración del servicio.</span>
+  </div>`;
+}
+
+/* --- vista de semana: columnas por día, alto proporcional a la duración --- */
+function weekView(weekStart){
+  const days = []; for(let i = 0; i < 7; i++) days.push(addDays(weekStart, i));
+  const cols = days.map(d => {
+    const dISO = iso(d);
+    const apts = aptsOn(dISO);
+    const isToday = dISO === iso(TODAY);
+    const blocks = apts.map(a => {
+      const top = (mins(a.time) - DAY_START*60) / GANTT_SPAN * 100;
+      const h = a.dur / GANTT_SPAN * 100;
+      const tiny = h < 7.5;
+      const c = cli(a.client), s = svc(a.service);
+      return `<button class="wblock st-${a.status} ${tiny?'tiny':''}" style="top:${top}%;height:${h}%"
+        title="${esc(c.name)} · ${esc(s.name)} · ${a.dur} min · ${to12(a.time)}" onclick="openApt('${a.id}')">
+        <span class="wt">${to12(a.time)}</span>
+        ${tiny ? '' : `<span class="wn2">${esc(shortName(c.name))}</span><span class="ws">${esc(s.name)}</span>`}
+      </button>`;
+    }).join('');
+    return `<div class="week-col ${isToday?'today':''}">
+      <div class="week-col-h"><div class="wd">${DAYS_SHORT[d.getDay()]}</div><div class="wn">${d.getDate()}</div></div>
+      <div class="week-body">${blocks || '<div class="week-empty">Sin citas</div>'}</div>
+    </div>`;
+  }).join('');
+  const total = days.reduce((n,d) => n + aptsOn(iso(d)).filter(a=>a.status!=='cancelada').length, 0);
+  const hrs = days.reduce((n,d) => n + bookedMins(iso(d)), 0) / 60;
+  return `<div class="week-scroll"><div class="week-wrap">${cols}</div></div>
+  <div class="legend" style="margin-top:14px">
+    <span>Total de la semana: <strong style="color:var(--text)">${total} citas</strong> · ${hrs.toFixed(1)} h ocupadas</span>
+    <span class="mini">La altura de cada bloque es proporcional a la duración del servicio.</span>
+  </div>`;
+}
+
+/* --- detalle de cita --- */
+function openApt(id){
+  const a = APPOINTMENTS.find(x => x.id === id);
+  if(!a) return;
+  const c = cli(a.client), s = svc(a.service);
+  const d = parseISO(a.date);
+  const ends = hhmm(mins(a.time) + a.dur);
+  openModal(`
+    <div class="modal-h">
+      <div><h3>Detalle de la cita</h3><div class="sub">${fmtLong(d)} · ${to12(a.time)} – ${to12(ends)}</div></div>
+      <button class="modal-x" onclick="closeModal()" aria-label="Cerrar">${icon('x')}</button>
+    </div>
+    <div class="modal-b">
+      <div style="display:flex; gap:12px; align-items:center; margin:4px 0 14px">
+        <span class="avatar lg">${initials(c.name)}</span>
+        <div style="flex:1"><div style="font-weight:800; font-size:15px">${esc(c.name)}</div>
+        <div class="mini">${esc(c.phone)} · ${c.whatsapp ? 'WhatsApp activo' : 'Sin WhatsApp'}</div></div>
+        ${statusPill(a.status)}
+      </div>
+      <div class="detail-rows">
+        <div class="dr"><span class="k">Servicio</span><span class="v">${esc(s.name)}</span></div>
+        <div class="dr"><span class="k">Duración</span><span class="v">${a.dur} minutos (${to12(a.time)} a ${to12(ends)})</span></div>
+        <div class="dr"><span class="k">Profesional</span><span class="v">${proName(a.pro)}</span></div>
+        <div class="dr"><span class="k">Valor</span><span class="v">${fmtUSD2(a.price)}</span></div>
+        <div class="dr"><span class="k">Fórmula de color</span><span class="v">${c.formula ? esc(c.formula.mix) + ' · oxidante ' + esc(c.formula.ox) : 'Sin registro'}</span></div>
+        <div class="dr"><span class="k">Recordatorio</span><span class="v">${SETTINGS.reminderOn ? 'Automático ' + SETTINGS.reminderHours + ' h antes' : 'Desactivado'}</span></div>
+      </div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap">
+        <button class="btn btn-ghost btn-sm" onclick="openClient('${c.id}')">${icon('users','ico-sm')} Ver ficha</button>
+        <button class="btn btn-ghost btn-sm" onclick="goThreadFor('${c.id}')">${icon('chat','ico-sm')} Mensajes</button>
+        ${a.status === 'pendiente' ? `<button class="btn btn-soft btn-sm" onclick="setAptStatus('${a.id}','confirmada')">${icon('check','ico-sm')} Confirmar</button>` : ''}
+        ${a.status === 'confirmada' ? `<button class="btn btn-soft btn-sm" onclick="setAptStatus('${a.id}','atendida')">${icon('check','ico-sm')} Marcar atendida</button>` : ''}
+        ${a.status !== 'cancelada' && a.status !== 'atendida' ? `<button class="btn btn-ghost btn-sm" onclick="setAptStatus('${a.id}','cancelada')" style="color:var(--red)">${icon('x','ico-sm')} Cancelar</button>` : ''}
+      </div>
+      <p class="mini" style="margin-top:12px">En el sistema real, aquí también se registra la fórmula usada, el pago y la nota de la sesión.</p>
+    </div>
+    <div class="modal-f"><button class="btn btn-ghost" onclick="closeModal()">Cerrar</button></div>`);
+}
+function setAptStatus(id, st){
+  const a = APPOINTMENTS.find(x => x.id === id);
+  if(!a) return;
+  a.status = st;
+  if(st === 'atendida' && !PAYMENTS.some(p => p.client === a.client && p.date === a.date && p.service === a.service)){
+    PAYMENTS.unshift({id:'y'+(_payId++), client:a.client, service:a.service, date:a.date, amount:a.price, method:'Efectivo', status:'pagado', pro:a.pro});
+  }
+  closeModal();
+  toast(st === 'atendida' ? 'Cita marcada como atendida y pago registrado.' : 'Cita marcada como ' + STATUS_LABEL[st].toLowerCase() + '.');
+  renderNav();
+  go(state.section === 'ficha' ? 'ficha' : state.section);
+}
+
+/* --- nueva cita --- */
+function newAppointment(dateISO){
+  const dISO = dateISO || iso(state.section === 'agenda' ? state.agendaDate : TODAY);
+  openModal(`
+    <div class="modal-h">
+      <div><h3>Nueva cita</h3><div class="sub">Se agrega a la agenda de inmediato (demostración).</div></div>
+      <button class="modal-x" onclick="closeModal()" aria-label="Cerrar">${icon('x')}</button>
+    </div>
+    <div class="modal-b">
+      <div class="form-grid">
+        <div class="field full">
+          <label for="f-client">Clienta</label>
+          <select class="select" id="f-client" onchange="onClientSelect()">
+            <option value="">Seleccione una clienta</option>
+            ${CLIENTS.map(c => `<option value="${c.id}">${esc(c.name)} · ${esc(c.phone)}</option>`).join('')}
+            <option value="__new">+ Clienta nueva</option>
+          </select>
+        </div>
+        <div class="field full hidden" id="newClientFields">
+          <div class="form-grid">
+            <div class="field" style="margin:0"><label for="f-newname">Nombre completo</label><input class="input" id="f-newname" placeholder="Ej. Ana María Vélez"></div>
+            <div class="field" style="margin:0"><label for="f-newphone">WhatsApp</label><input class="input" id="f-newphone" placeholder="+593 9X XXX XXXX"></div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-service">Servicio</label>
+          <select class="select" id="f-service" onchange="onServiceSelect()">
+            ${SERVICES.map(s => `<option value="${s.id}" data-dur="${s.dur}" data-price="${s.price}">${esc(s.name)} · ${fmtUSD(s.price)} · ${s.dur} min</option>`).join('')}
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-pro">Profesional</label>
+          <select class="select" id="f-pro">${PROS.map(p => `<option value="${p.id}">${p.name} · ${p.role}</option>`).join('')}</select>
+        </div>
+        <div class="field">
+          <label for="f-date">Día</label>
+          <input class="input" type="date" id="f-date" value="${dISO}">
+        </div>
+        <div class="field">
+          <label for="f-time">Hora</label>
+          <input class="input" type="time" id="f-time" value="10:00" step="900">
+        </div>
+        <div class="field">
+          <label for="f-dur">Duración (min)</label>
+          <input class="input" type="number" id="f-dur" min="15" step="15" value="${SERVICES[0].dur}">
+        </div>
+        <div class="field">
+          <label for="f-price">Valor (USD)</label>
+          <input class="input" type="number" id="f-price" min="0" step="1" value="${SERVICES[0].price}">
+        </div>
+      </div>
+      <p class="mini" style="margin:6px 0 2px">${icon('warn','ico-sm')} Si la hora se cruza con otra cita de la misma profesional, el sistema se lo avisa. En esta demostración la cita solo existe en pantalla.</p>
+    </div>
+    <div class="modal-f">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveAppointment()">${icon('check')} Agendar cita</button>
+    </div>`);
+  onServiceSelect();
+}
+function onClientSelect(){
+  const v = document.getElementById('f-client').value;
+  document.getElementById('newClientFields').classList.toggle('hidden', v !== '__new');
+}
+function onServiceSelect(){
+  const sel = document.getElementById('f-service');
+  if(!sel) return;
+  const opt = sel.selectedOptions[0];
+  if(!opt) return;
+  document.getElementById('f-dur').value = opt.dataset.dur;
+  document.getElementById('f-price').value = opt.dataset.price;
+  const s = svc(opt.value);
+  const proSel = document.getElementById('f-pro');
+  if(s && s.pro && proSel) proSel.value = s.pro;
+}
+function saveAppointment(){
+  let clientId = document.getElementById('f-client').value;
+  const serviceId = document.getElementById('f-service').value;
+  const pro = document.getElementById('f-pro').value;
+  const date = document.getElementById('f-date').value;
+  const time = document.getElementById('f-time').value;
+  const dur = parseInt(document.getElementById('f-dur').value, 10) || svc(serviceId).dur;
+  let price = parseFloat(document.getElementById('f-price').value);
+  if(isNaN(price)) price = svc(serviceId).price;
+
+  if(!date){ toast('Falta elegir el día de la cita.'); return; }
+  if(!time){ toast('Falta elegir la hora de la cita.'); return; }
+  if(clientId === '__new'){
+    const name = (document.getElementById('f-newname').value || '').trim();
+    const phone = (document.getElementById('f-newphone').value || '').trim();
+    if(name.length < 3){ toast('Escriba el nombre de la clienta nueva.'); return; }
+    const id = 'c' + (CLIENTS.length + 1);
+    CLIENTS.push({id, name, phone: phone || 'Sin teléfono', email:'sin correo', since: TODAY.getFullYear() + '', barrio:'Cuenca', source:'Mostrador', whatsapp: !!phone, formula:null, lastWork:'Sin registro previo.', notes:[], retouch:null, packs:[]});
+    clientId = id;
+  }
+  if(!clientId){ toast('Falta elegir la clienta.'); return; }
+
+  const newStart = mins(time);
+  const newEnd = newStart + dur;
+  const clash = APPOINTMENTS.find(a => a.date === date && a.pro === pro && a.status !== 'cancelada'
+    && newStart < mins(a.time) + a.dur && mins(a.time) < newEnd);
+  APPOINTMENTS.push({ id:'a'+(_aptId++), client:clientId, service:serviceId, pro, date, time, dur, price, status:'confirmada' });
+  APPOINTMENTS.sort((a,b) => (a.date + a.time).localeCompare(b.date + b.time));
+  closeModal();
+  toast(clash
+    ? 'Cita agendada. Ojo: se cruza con otra cita de ' + proName(pro) + ' a las ' + to12(clash.time) + '.'
+    : 'Cita agendada para ' + fmtLong(parseISO(date)) + ' a las ' + to12(time) + ' (' + dur + ' min).');
+  renderNav();
+  if(state.section === 'agenda'){
+    if(state.agendaMode === 'dia'){ state.agendaDate = parseISO(date); }
+    else { state.agendaDate = parseISO(date); }
+    viewAgenda(document.getElementById('view'));
+  } else if(state.section === 'escritorio'){ viewEscritorio(document.getElementById('view')); }
+  else if(state.section === 'ficha'){ viewFicha(document.getElementById('view')); }
+  else { go('agenda'); }
+}
+
+/* ============================================================
+   CLIENTAS
+   ============================================================ */
+function viewClientas(root){
+  root.innerHTML = `
+  <div class="page-head">
+    <div><h1>Clientas</h1><div class="sub">${CLIENTS.length} clientas registradas · historial, fórmula de color, retoques y packs en un solo lugar.</div></div>
+    <div class="actions">
+      <button class="btn btn-ghost" onclick="go('mensajes')">${icon('chat')} Mensajes</button>
+      <button class="btn btn-primary" onclick="newAppointment()">${icon('plus')} Nueva cita</button>
+    </div>
+  </div>
+  <div class="grid kpis stats-3" style="margin-bottom:16px">
+    <div class="card kpi"><div class="k-top"><span class="k-ico">${icon('users')}</span><span class="k-lbl">Clientas activas</span></div><div class="k-val">${CLIENTS.length}</div><div class="k-sub">${CLIENTS.filter(c=>ensureVisits(c.id).length>1).length} con más de una visita</div></div>
+    <div class="card kpi"><div class="k-top"><span class="k-ico">${icon('gift')}</span><span class="k-lbl">Packs vigentes</span></div><div class="k-val">${PACKS.filter(p=>p.used<p.total).length}</div><div class="k-sub">${PACKS.reduce((n,p)=>n+(p.total-p.used),0)} sesiones por usar</div></div>
+    <div class="card kpi"><div class="k-top"><span class="k-ico">${icon('droplet')}</span><span class="k-lbl">Retoques por vencer</span></div><div class="k-val">${retouchesDue().length}</div><div class="k-sub">raíces que ya toca igualar</div></div>
+  </div>
+  <div class="card">
+    <div class="card-head">
+      <div class="search-wrap">${icon('search')}<input class="input" id="clientSearch" placeholder="Buscar por nombre, teléfono o correo…" oninput="state.clientQ=this.value;renderClientList()" value="${esc(state.clientQ)}"></div>
+      <div class="actions"><span class="hint" id="clientCount"></span></div>
+    </div>
+    <div id="clientList"></div>
+  </div>`;
+  renderClientList();
+}
+function renderClientList(){
+  const q = (state.clientQ || '').toLowerCase().trim();
+  const list = CLIENTS.filter(c => !q || c.name.toLowerCase().includes(q) || c.phone.includes(q) || c.email.toLowerCase().includes(q));
+  const el = document.getElementById('clientList');
+  if(!el) return;
+  document.getElementById('clientCount').textContent = list.length + ' de ' + CLIENTS.length;
+  el.innerHTML = list.length ? list.map(c => {
+    const v = ensureVisits(c.id);
+    const last = v[0];
+    const packs = c.packs.filter(p => p.used < p.total).length;
+    const dd = c.retouch ? daysUntil(c.retouch.due) : null;
+    const retTag = dd !== null && dd <= 14 ? `<span class="pill ${dd<0?'pill-red':'pill-amber'} no-dot">Retoque ${dd<0?'vencido':'en '+dd+'d'}</span>` : '';
+    return `<button class="client-row" onclick="openClient('${c.id}')">
+      <span class="avatar">${initials(c.name)}</span>
+      <span class="r-main"><span class="r-t">${esc(c.name)}</span><span class="r-s">${esc(c.phone)} · ${esc(c.email)}</span></span>
+      <span class="cr-meta">
+        <span><b>${v.length}</b> visitas</span>
+        <span>últ. <b>${last ? fmtShort(parseISO(last.date)) : '—'}</b></span>
+      </span>
+      ${retTag}
+      <span class="pill ${packs ? 'pill-copper' : 'pill-gray'} no-dot">${packs ? packs + ' pack' + (packs>1?'s':'') : 'Sin pack'}</span>
+      ${icon('arrowRight','ico-sm')}
+    </button>`;
+  }).join('') : '<div class="empty">No se encontraron clientas con ese criterio.</div>';
+}
+function openClient(id){
+  state.clientId = id;
+  state.section = 'ficha';
+  document.getElementById('tbTitle').textContent = 'Ficha de la clienta';
+  renderNav();
+  viewFicha(document.getElementById('view'));
+  toggleSide(false);
+  window.scrollTo(0,0);
+}
+function viewFicha(root){
+  const c = cli(state.clientId);
+  if(!c){ go('clientas'); return; }
+  const v = ensureVisits(c.id);
+  const total = v.reduce((s,x) => s + x.price, 0);
+  const upcoming = APPOINTMENTS.filter(a => a.client === c.id && a.date >= iso(TODAY) && a.status !== 'cancelada' && a.status !== 'atendida')
+    .sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time));
+  const packs = c.packs;
+  const dd = c.retouch ? daysUntil(c.retouch.due) : null;
+  root.innerHTML = `
+  <button class="link-btn" onclick="go('clientas')" style="display:inline-flex;align-items:center;gap:6px;margin-bottom:14px">${icon('arrowLeft','ico-sm')} Volver a clientas</button>
+  <div class="card card-pad" style="margin-bottom:16px">
+    <div class="ficha-head">
+      <span class="avatar lg">${initials(c.name)}</span>
+      <div class="fh-main">
+        <h2>${esc(c.name)}</h2>
+        <div class="fh-sub">${esc(c.phone)} · Clienta desde ${c.since} · ${esc(c.source)}</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+          <span class="tag">${v.length} visitas</span>
+          <span class="tag">${fmtUSD(total)} en servicios</span>
+          ${c.formula ? '<span class="tag" style="background:#FBF1E6;border-color:#E9D3BC;color:#8A5A2E">Con fórmula de color</span>' : ''}
+          ${packs.length ? `<span class="tag">${packs.filter(p=>p.used<p.total).length} packs activos</span>` : ''}
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-ghost" onclick="goThreadFor('${c.id}')">${icon('chat')} Mensajes</button>
+        <button class="btn btn-primary" onclick="newAppointment('${iso(TODAY)}')">${icon('plus')} Agendar</button>
+      </div>
+    </div>
+  </div>
+  <div class="ficha-grid">
+    <div style="display:grid;gap:16px">
+      <div class="card">
+        <div class="card-head"><h3>Fórmula de color</h3><span class="hint">última visita</span></div>
+        <div class="card-pad">
+          ${c.formula ? `<div class="formula">
+            <div class="f-lbl">${icon('droplet','ico-sm')} Mezcla registrada</div>
+            <div class="f-mix">${esc(c.formula.mix)}</div>
+            <div class="f-rows">
+              <div class="f-row"><span class="k">Oxidante</span><span class="v">${esc(c.formula.ox)}</span></div>
+              <div class="f-row"><span class="k">Tiempo de exposición</span><span class="v">${esc(c.formula.time)}</span></div>
+            </div>
+            <div class="f-note"><strong>Último trabajo:</strong> ${esc(c.lastWork)}</div>
+          </div>` : '<div class="formula-empty">Esta clienta todavía no tiene fórmula de color registrada.</div>'}
+          <button class="btn btn-soft btn-sm" style="margin-top:12px" onclick="toast('Demo: la fórmula no se guarda.')">${icon('edit','ico-sm')} Actualizar fórmula</button>
+        </div>
+      </div>
+      ${upcoming.length ? `<div class="card">
+        <div class="card-head"><h3>Próximas citas</h3></div>
+        <div>${upcoming.map(a => `<button class="row" onclick="openApt('${a.id}')">
+          <span class="time-box"><span class="h">${parseISO(a.date).getDate()}</span><span class="ampm">${MONTHS[parseISO(a.date).getMonth()].slice(0,3)}</span></span>
+          <span class="r-main"><span class="r-t">${esc(svc(a.service).name)}</span><span class="r-s">${fmtLong(parseISO(a.date))} · ${to12(a.time)} · ${a.dur} min</span></span>
+          <span class="r-end">${statusPill(a.status)}</span>
+        </button>`).join('')}</div>
+      </div>` : ''}
+      <div class="card">
+        <div class="card-head"><h3>Historial de visitas</h3><span class="hint">${v.length} registros</span></div>
+        <div class="table-wrap"><table class="t">
+          <thead><tr><th>Fecha</th><th>Servicio</th><th>Profesional</th><th class="num">Valor</th></tr></thead>
+          <tbody>${v.slice(0,10).map(x => `<tr>
+            <td class="mini">${fmtShort(parseISO(x.date))}</td>
+            <td>${esc(svc(x.service).name)}</td>
+            <td class="mini">${proName(x.pro)}</td>
+            <td class="num">${fmtUSD2(x.price)}</td>
+          </tr>`).join('')}</tbody>
+        </table></div>
+        ${v.length > 10 ? `<div class="card-pad mini" style="border-top:1px solid var(--line-2)">Se muestran las 10 visitas más recientes de ${v.length}.</div>` : ''}
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Fotos de evolución</h3><span class="hint">Simuladas</span></div>
+        <div class="card-pad">
+          <div class="photos"><div class="photo"></div><div class="photo alt"></div><div class="photo alt2"></div></div>
+          <p class="mini" style="margin-top:9px">En el sistema real, aquí se guardan las fotos antes y después de cada color, con la fecha.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;gap:16px">
+      <div class="card">
+        <div class="card-head"><h3>Contacto</h3></div>
+        <div class="card-pad info-list">
+          <div class="il">${icon('phone')}<span><span class="lbl">Teléfono / WhatsApp</span>${esc(c.phone)} ${c.whatsapp ? '<span class="pill pill-green no-dot" style="margin-left:4px">WhatsApp</span>' : '<span class="pill pill-gray no-dot" style="margin-left:4px">Sin WhatsApp</span>'}</span></div>
+          <div class="il">${icon('mail')}<span><span class="lbl">Correo</span>${esc(c.email)}</span></div>
+          <div class="il">${icon('pin')}<span><span class="lbl">Zona</span>${esc(c.barrio)}, Cuenca</span></div>
+          <div class="il">${icon('sparkle')}<span><span class="lbl">Cómo llegó</span>${esc(c.source)}</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Retoque de raíz</h3>${dd !== null ? `<span class="hint">cada ${SETTINGS.retouchWeeks} semanas</span>` : ''}</div>
+        <div class="card-pad">
+          ${c.retouch ? `
+            <div class="detail-rows" style="margin:0 0 10px">
+              <div class="dr"><span class="k">Último color</span><span class="v">${fmtShort(c.retouch.last)}</span></div>
+              <div class="dr"><span class="k">Próximo retoque</span><span class="v">${fmtShort(c.retouch.due)}</span></div>
+            </div>
+            <span class="pill ${dd < 0 ? 'pill-red' : (dd <= 14 ? 'pill-amber' : 'pill-green')}">${dd < 0 ? 'Vencido hace ' + (-dd) + ' días' : (dd === 0 ? 'Toca hoy' : 'En ' + dd + ' días')}</span>
+            <button class="btn btn-soft btn-sm" style="margin-top:10px" onclick="toast('Demo: se enviaría el aviso de retoque por WhatsApp.')">${icon('bell','ico-sm')} Avisar retoque</button>
+          ` : '<p class="mini">Sin fecha de retoque registrada. Se calcula a partir del último color aplicado.</p>'}
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Packs</h3><span class="hint">${packs.length}</span></div>
+        <div class="card-pad">
+          ${packs.length ? packs.map(p => {
+            const left = p.total - p.used;
+            const d2 = daysUntil(p.exp);
+            return `<div class="pack">
+              <div class="pack-top"><span class="pn">${esc(p.name)}</span>
+                <span class="pill ${left === 0 ? 'pill-gray' : d2 < 0 ? 'pill-red' : d2 <= 30 ? 'pill-amber' : 'pill-green'}">${left === 0 ? 'Completo' : d2 < 0 ? 'Vencido' : d2 + ' días'}</span>
+              </div>
+              <div class="pack-meta"><span>${p.used} usadas · ${left} restantes</span><span>vence ${fmtShort(p.exp)}</span></div>
+              <div class="progress"><i style="width:${Math.round(p.used / p.total * 100)}%"></i></div>
+            </div>`;
+          }).join('') : '<p class="mini">Esta clienta no tiene packs comprados.</p>'}
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Notas del estudio</h3><button class="link-btn" onclick="toast('Demo: la nota no se guarda.')">${icon('plus','ico-sm')} Nota</button></div>
+        <div class="card-pad">
+          ${c.notes.length ? c.notes.map(n => `<div class="note">${esc(n)}</div>`).join('') : '<p class="mini">Sin notas. Aquí se registran alergias, preferencias y observaciones de cada sesión.</p>'}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+function goThreadFor(clientId){
+  const t = THREADS.find(x => x.client === clientId);
+  if(t){ state.threadId = t.id; go('mensajes'); return; }
+  toast('Esta clienta no tiene conversación abierta en la demo.');
+  go('mensajes');
+}
+
+/* ============================================================
+   MENSAJES
+   ============================================================ */
+function viewMensajes(root){
+  root.innerHTML = `
+  <div class="page-head">
+    <div><h1>Mensajes</h1><div class="sub">Recordatorios de turno, avisos de retoque y conversaciones de WhatsApp del estudio.</div></div>
+    <div class="actions"><span class="chip-date">${icon('bell','ico-sm')} Recordatorio ${SETTINGS.reminderOn ? SETTINGS.reminderHours + ' h antes' : 'desactivado'}</span></div>
+  </div>
+  <div class="msg-shell ${state.showChat ? 'show-chat' : ''}" id="msgShell">
+    <div class="msg-list">
+      <div class="msg-list-h"><h3>Conversaciones</h3><p>${THREADS.length} chats · ${unreadTotal()} sin leer</p></div>
+      <div class="msg-items">${THREADS.map(t => {
+        const c = cli(t.client);
+        const last = t.msgs[t.msgs.length - 1];
+        return `<button class="msg-item ${t.id === state.threadId ? 'on' : ''}" onclick="openThread('${t.id}')">
+          <span class="avatar">${initials(c.name)}</span>
+          <span class="m-main">
+            <span class="m-top"><span class="m-n">${esc(c.name)}</span><span class="m-t">${esc(last.t || '')}</span></span>
+            <span class="m-p">${last.from === 'out' ? 'Usted: ' : ''}${esc(last.text.slice(0, 56))}${last.text.length > 56 ? '…' : ''}</span>
+          </span>
+          ${t.unread ? `<span class="m-badge">${t.unread}</span>` : ''}
+        </button>`;
+      }).join('')}</div>
+    </div>
+    <div class="msg-pane" id="msgPane"></div>
+  </div>`;
+  renderThread();
+}
+function openThread(id){
+  state.threadId = id;
+  const t = THREADS.find(x => x.id === id);
+  if(t) t.unread = 0;
+  const shell = document.getElementById('msgShell');
+  if(shell) shell.classList.add('show-chat');
+  state.showChat = true;
+  renderNav();
+  viewMensajes(document.getElementById('view'));
+}
+function renderThread(){
+  const pane = document.getElementById('msgPane');
+  if(!pane) return;
+  const t = THREADS.find(x => x.id === state.threadId) || THREADS[0];
+  state.threadId = t.id;
+  const c = cli(t.client);
+  pane.innerHTML = `
+  <div class="msg-pane-h">
+    <button class="msg-back" onclick="state.showChat=false;document.getElementById('msgShell').classList.remove('show-chat')" aria-label="Volver">${icon('arrowLeft')}</button>
+    <span class="avatar">${initials(c.name)}</span>
+    <div class="m-main"><div class="m-n">${esc(c.name)}</div><div class="m-s">${icon('phone','ico-sm')} ${esc(c.phone)} · ${c.whatsapp ? 'WhatsApp del estudio' : 'Solo llamadas'}</div></div>
+    <button class="btn btn-ghost btn-sm" onclick="openClient('${c.id}')">${icon('users','ico-sm')} Ficha</button>
+  </div>
+  <div class="chat">
+    <div class="auto-note">${icon('bell','ico-sm')} Recordatorio automático a ${SETTINGS.reminderHours} h antes de la cita y aviso de retoque a las ${SETTINGS.retouchWeeks} semanas del último color.</div>
+    ${t.msgs.map(m => `<div class="bubble ${m.from === 'in' ? 'in' : 'out'}">
+      ${m.from === 'out' ? `<div class="sender">${m.auto ? 'Mensaje automático' : 'Lucía Patiño'}</div>` : ''}
+      ${esc(m.text)}
+      <div class="bt">${esc(m.t || '')}</div>
+    </div>`).join('')}
+  </div>
+  <div class="chat-input">
+    <input class="input" id="chatText" placeholder="Escriba un mensaje…" onkeydown="if(event.key==='Enter') sendChat()">
+    <button class="btn btn-primary" onclick="sendChat()">${icon('send')}</button>
+  </div>
+  <div class="chat-note">Demostración: los mensajes no se envían a ninguna parte.</div>`;
+  const chat = pane.querySelector('.chat');
+  chat.scrollTop = chat.scrollHeight;
+}
+function sendChat(){
+  const el = document.getElementById('chatText');
+  const txt = (el.value || '').trim();
+  if(!txt) return;
+  const t = THREADS.find(x => x.id === state.threadId);
+  const now = new Date();
+  t.msgs.push({from:'out', text:txt, t:'Hoy ' + pad(now.getHours()) + ':' + pad(now.getMinutes())});
+  el.value = '';
+  renderThread();
+  toast('Demo: el mensaje se muestra en el chat, pero no se envía.');
+}
+
+/* ============================================================
+   PAGOS
+   ============================================================ */
+function viewPagos(root){
+  const month = PAYMENTS.filter(p => parseISO(p.date).getMonth() === TODAY.getMonth());
+  const paid = month.filter(p => p.status === 'pagado');
+  const pending = month.filter(p => p.status === 'pendiente');
+  const total = paid.reduce((s,p) => s + p.amount, 0);
+  const ticket = paid.length ? total / paid.length : 0;
+  const byMethod = ['Efectivo','Transferencia','Tarjeta'].map(m => ({m, v: paid.filter(p => p.method === m).reduce((s,p) => s + p.amount, 0)}));
+  const maxM = Math.max(...byMethod.map(x => x.v), 1);
+
+  root.innerHTML = `
+  <div class="page-head">
+    <div><h1>Pagos</h1><div class="sub">Cobros de ${MONTHS[TODAY.getMonth()]} ${TODAY.getFullYear()} · ${month.length} movimientos</div></div>
+    <div class="actions"><button class="btn btn-ghost" onclick="toast('Demo: el cierre de caja se genera en el sistema real.')">${icon('down')} Exportar</button><button class="btn btn-primary" onclick="newAppointment()">${icon('plus')} Nueva cita</button></div>
+  </div>
+  <div class="grid kpis">
+    <div class="card kpi"><div class="k-top"><span class="k-ico">${icon('cash')}</span><span class="k-lbl">Cobrado en el mes</span></div><div class="k-val">${fmtUSD(total)}</div><div class="k-sub">${paid.length} pagos registrados</div></div>
+    <div class="card kpi"><div class="k-top"><span class="k-ico">${icon('wallet')}</span><span class="k-lbl">Por cobrar</span></div><div class="k-val">${fmtUSD(pending.reduce((s,p)=>s+p.amount,0))}</div><div class="k-sub">${pending.length} cobros pendientes</div></div>
+    <div class="card kpi"><div class="k-top"><span class="k-ico">${icon('chart')}</span><span class="k-lbl">Ticket promedio</span></div><div class="k-val">${fmtUSD2(ticket)}</div><div class="k-sub">por clienta atendida</div></div>
+    <div class="card kpi"><div class="k-top"><span class="k-ico">${icon('calendar')}</span><span class="k-lbl">Cobrado hoy</span></div><div class="k-val">${fmtUSD(todayRevenue())}</div><div class="k-sub">${PAYMENTS.filter(p=>p.date===iso(TODAY)&&p.status==='pagado').length} cobros de hoy</div></div>
+  </div>
+
+  <div class="dcols" style="margin-bottom:16px">
+    <div class="card">
+      <div class="card-head"><h3>Movimientos del mes</h3><span class="hint">${month.length} registros</span></div>
+      <div class="table-wrap"><table class="t">
+        <thead><tr><th>Fecha</th><th>Clienta</th><th>Servicio</th><th>Método</th><th class="num">Monto</th><th>Estado</th></tr></thead>
+        <tbody>${month.slice(0, 18).map(p => `<tr>
+          <td class="mini">${fmtShort(parseISO(p.date))}</td>
+          <td><button class="t-name" onclick="openClient('${p.client}')" style="font-weight:600">${esc(cli(p.client).name)}</button><div class="mini">${proName(p.pro)}</div></td>
+          <td>${esc(svc(p.service).name)}</td>
+          <td class="mini">${p.method}</td>
+          <td class="num">${fmtUSD2(p.amount)}</td>
+          <td>${p.status === 'pagado' ? '<span class="pill pill-green">Pagado</span>' : `<button class="pill pill-amber" onclick="markPaid('${p.id}')" title="Marcar como pagado" style="border:0;cursor:pointer">Pendiente</button>`}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>
+      <div class="card-pad mini" style="border-top:1px solid var(--line-2)">Se muestran los 18 movimientos más recientes. Los pendientes se pueden marcar como pagados con un clic.</div>
+    </div>
+
+    <div style="display:grid;gap:16px;align-content:start">
+      <div class="card">
+        <div class="card-head"><h3>Cómo pagan</h3><span class="hint">${MONTHS[TODAY.getMonth()]}</span></div>
+        <div class="card-pad">
+          ${byMethod.map(x => `<div class="hbar">
+            <div class="hbar-top"><span class="n">${x.m}</span><span class="v">${fmtUSD(x.v)}</span></div>
+            <div class="hbar-track"><div class="hbar-fill" style="width:${Math.round(x.v/maxM*100)}%"></div></div>
+          </div>`).join('')}
+          <p class="mini">El efectivo sigue siendo el método principal; la transferencia crece con los packs.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Resumen</h3></div>
+        <div class="card-pad">
+          <div class="detail-rows" style="margin:0">
+            <div class="dr"><span class="k">Cobrado</span><span class="v">${fmtUSD2(total)}</span></div>
+            <div class="dr"><span class="k">Pendiente</span><span class="v">${fmtUSD2(pending.reduce((s,p)=>s+p.amount,0))}</span></div>
+            <div class="dr"><span class="k">Facturado</span><span class="v">${fmtUSD2(total + pending.reduce((s,p)=>s+p.amount,0))}</span></div>
+            <div class="dr"><span class="k">Pagos hoy</span><span class="v">${fmtUSD2(todayRevenue())}</span></div>
+          </div>
+          <p class="mini" style="margin-top:10px">El cierre de caja del día se descarga en PDF en el sistema real.</p>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+function markPaid(id){
+  const p = PAYMENTS.find(x => x.id === id);
+  if(!p) return;
+  p.status = 'pagado';
+  toast('Pago registrado: ' + fmtUSD2(p.amount) + ' de ' + cli(p.client).name + '.');
+  go('pagos');
+}
+
+/* ============================================================
+   INFORMES
+   ============================================================ */
+function viewInformes(root){
+  const weeks = [];
+  for(let i = 3; i >= 0; i--){
+    const start = addDays(startOfWeek(TODAY), -7*i);
+    const end = addDays(start, 6);
+    const apts = aptsRange(iso(start), iso(end)).filter(a => a.status !== 'cancelada');
+    const hrs = apts.reduce((s,a) => s + a.dur, 0) / 60;
+    weeks.push({l: i === 0 ? 'Esta sem.' : start.getDate() + ' ' + MONTHS[start.getMonth()].slice(0,3), v: apts.length, h: hrs});
+  }
+  const maxW = Math.max(...weeks.map(w => w.v), 1);
+  const maxH = Math.max(...weeks.map(w => w.h), 1);
+  const top = topServices(6);
+  const maxTop = Math.max(...top.map(t => t.count), 1);
+  const ms = monthSeries();
+  const maxM = Math.max(...ms.map(m => m.v), 1);
+  const all = APPOINTMENTS.filter(a => a.date >= iso(addDays(TODAY,-30)) && a.date <= iso(addDays(TODAY,30)));
+  const counts = {confirmada:0, pendiente:0, atendida:0, cancelada:0};
+  all.forEach(a => counts[a.status] = (counts[a.status]||0) + 1);
+  const totalA = Object.values(counts).reduce((s,n) => s+n, 0) || 1;
+  const segs = [
+    {k:'atendida', l:'Atendidas', c:'#2E7D5F', n:counts.atendida},
+    {k:'confirmada', l:'Confirmadas', c:'#B06A3B', n:counts.confirmada},
+    {k:'pendiente', l:'Pendientes', c:'#D9A046', n:counts.pendiente},
+    {k:'cancelada', l:'Canceladas', c:'#C58A92', n:counts.cancelada}
+  ];
+  const R = 62, C = 2 * Math.PI * R;
+  let offset = 0;
+  const donut = segs.map(s => {
+    const len = s.n / totalA * C;
+    const el = `<circle cx="75" cy="75" r="${R}" stroke="${s.c}" stroke-dasharray="${len} ${C-len}" stroke-dashoffset="${-offset}" transform="rotate(-90 75 75)" stroke-linecap="butt"></circle>`;
+    offset += len;
+    return el;
+  }).join('');
+  const confirmPct = Math.round((counts.confirmada + counts.atendida) / totalA * 100);
+  const cancelPct = Math.round(counts.cancelada / totalA * 100);
+  const occ = occupancy(iso(TODAY));
+  const monthHours = APPOINTMENTS.filter(a => parseISO(a.date).getMonth() === TODAY.getMonth() && a.status !== 'cancelada')
+    .reduce((s,a) => s + a.dur, 0) / 60;
+
+  root.innerHTML = `
+  <div class="page-head">
+    <div><h1>Informes</h1><div class="sub">Cómo va el estudio: demanda, servicios, horas ocupadas e ingresos. Datos de ejemplo.</div></div>
+    <div class="actions"><span class="chip-date">${icon('calendar','ico-sm')} Últimos 30 días + próximos 30</span></div>
+  </div>
+
+  <div class="grid kpis">
+    <div class="card kpi"><div class="k-top"><span class="k-ico">${icon('calendar')}</span><span class="k-lbl">Citas este mes</span></div><div class="k-val">${APPOINTMENTS.filter(a=>parseISO(a.date).getMonth()===TODAY.getMonth()&&a.status!=='cancelada').length}</div><div class="k-sub"><span class="trend">${icon('up','ico-sm')} 12%</span> vs. mes anterior</div></div>
+    <div class="card kpi"><div class="k-top"><span class="k-ico">${icon('clock')}</span><span class="k-lbl">Horas ocupadas del mes</span></div><div class="k-val">${Math.round(monthHours)} h</div><div class="k-sub">${monthHours.toFixed(1)} h en el sillón</div></div>
+    <div class="card kpi"><div class="k-top"><span class="k-ico">${icon('cash')}</span><span class="k-lbl">Ingresos del mes</span></div><div class="k-val">${fmtUSD(paidMonth())}</div><div class="k-sub">cobrado y por cobrar</div></div>
+    <div class="card kpi"><div class="k-top"><span class="k-ico">${icon('check')}</span><span class="k-lbl">Confirmadas vs. canceladas</span></div><div class="k-val">${confirmPct}% / ${cancelPct}%</div><div class="k-sub">del total agendado</div></div>
+  </div>
+
+  <div class="dcols">
+    <div class="card">
+      <div class="card-head"><h3>Citas por semana</h3><span class="hint">últimas 4 semanas</span></div>
+      <div class="card-pad">
+        <div class="chart-bars">${weeks.map(w => `<div class="bar-wrap"><div class="bar" style="height:${Math.round(w.v/maxW*100)}%"><span class="bv">${w.v}</span></div><span class="bl">${w.l}</span></div>`).join('')}</div>
+        <p class="mini" style="margin-top:8px">Promedio: ${Math.round(weeks.reduce((s,w)=>s+w.v,0)/weeks.length)} citas por semana.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Estado de las citas</h3><span class="hint">60 días · confirmadas vs. canceladas</span></div>
+      <div class="card-pad">
+        <div class="donut-wrap">
+          <svg class="donut" viewBox="0 0 150 150">
+            <circle cx="75" cy="75" r="${R}" stroke="#F2ECE3"></circle>
+            ${donut}
+            <text x="75" y="72" text-anchor="middle" font-size="19" font-weight="800" fill="#2C2420">${totalA}</text>
+            <text x="75" y="88" text-anchor="middle" font-size="9" fill="#7A6A5E">citas</text>
+          </svg>
+          <div class="donut-legend">${segs.map(s => `<div><span class="l"><i class="legend-dot" style="background:${s.c}"></i>${s.l}</span><span class="n">${s.n} · ${Math.round(s.n/totalA*100)}%</span></div>`).join('')}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dcols-3">
+    <div class="card">
+      <div class="card-head"><h3>Servicios más vendidos</h3><span class="hint">este mes</span></div>
+      <div class="card-pad">
+        ${top.map(s => `<div class="hbar">
+          <div class="hbar-top"><span class="n">${esc(s.name)}</span><span class="v">${s.count} citas · ${fmtUSD(s.count*s.price)}</span></div>
+          <div class="hbar-track"><div class="hbar-fill" style="width:${Math.round(s.count/maxTop*100)}%"></div></div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Ingresos por mes</h3><span class="hint">USD</span></div>
+      <div class="card-pad">
+        <div class="months">${ms.map(m => `<div class="m"><span class="mv">${Math.round(m.v/100)/10}k</span><span class="mb" style="height:${Math.round(m.v/maxM*100)}%"></span><span class="ml">${m.l}</span></div>`).join('')}</div>
+        <p class="mini" style="margin-top:10px">Tendencia estable, con subidas en los meses de balayages y temporada de matrimonios.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="card-head"><h3>Horas ocupadas por semana</h3><span class="hint">las últimas 4 semanas</span></div>
+    <div class="card-pad">
+      <div class="chart-bars">${weeks.map(w => `<div class="bar-wrap"><div class="bar" style="height:${Math.round(w.h/maxH*100)}%"><span class="bv">${w.h.toFixed(1)} h</span></div><span class="bl">${w.l}</span></div>`).join('')}</div>
+      <p class="mini" style="margin-top:10px">Promedio: ${(weeks.reduce((s,w)=>s+w.h,0)/weeks.length).toFixed(1)} horas de sillón por semana. Una jornada completa son 11 h.</p>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   AJUSTES
+   ============================================================ */
+const SETTINGS = {
+  reminderOn: true,
+  reminderHours: 24,
+  retouchWeeks: 6,
+  hours: {'Lunes':['09:00','20:00'],'Martes':['09:00','20:00'],'Miércoles':['09:00','20:00'],'Jueves':['09:00','20:00'],'Viernes':['09:00','20:00'],'Sábado':['09:00','17:00'],'Domingo':['09:00','13:00']},
+  sundayOpen: false
+};
+function viewAjustes(root){
+  root.innerHTML = `
+  <div class="page-head">
+    <div><h1>Ajustes</h1><div class="sub">Catálogo de servicios, horarios y recordatorios. Los cambios se ven en el momento (en memoria).</div></div>
+    <div class="actions"><button class="btn btn-ghost" onclick="toast('Demo: la configuración no se guarda al cerrar.')">${icon('file')} Ver registro de cambios</button></div>
+  </div>
+  <div class="set-grid">
+    <div style="display:grid;gap:16px">
+      <div class="card">
+        <div class="card-head"><h3>Catálogo de servicios</h3><span class="hint">${SERVICES.length} servicios</span><div class="actions"><button class="btn btn-soft btn-sm" onclick="addService()">${icon('plus','ico-sm')} Agregar</button></div></div>
+        <div class="table-wrap"><table class="t">
+          <thead><tr><th style="width:42%">Servicio</th><th>Categoría</th><th>Profesional</th><th style="width:110px">Precio</th><th style="width:110px">Duración (min)</th></tr></thead>
+          <tbody>${SERVICES.map(s => `<tr>
+            <td><input class="inline-text" value="${esc(s.name)}" onchange="updateService('${s.id}','name',this.value)" aria-label="Nombre de ${esc(s.name)}"></td>
+            <td class="mini">${esc(s.cat)}</td>
+            <td class="mini">${proName(s.pro)}</td>
+            <td><input class="inline-num" type="number" min="0" step="1" value="${s.price}" onchange="updateService('${s.id}','price',this.value)" aria-label="Precio de ${esc(s.name)}"></td>
+            <td><input class="inline-num" type="number" min="15" step="5" value="${s.dur}" onchange="updateService('${s.id}','dur',this.value)" aria-label="Duración de ${esc(s.name)}"></td>
+          </tr>`).join('')}</tbody>
+        </table></div>
+        <div class="card-pad mini" style="border-top:1px solid var(--line-2)">Edite el nombre, el precio o la duración y presione fuera del campo: el cambio se aplica al instante en toda la agenda (el ancho de las citas se recalcula con la duración).</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Horarios de atención</h3><span class="hint">se usan para calcular la ocupación</span></div>
+        ${Object.entries(SETTINGS.hours).map(([day, [o,c]]) => `<div class="hours-row">
+          <span class="d">${day}</span>
+          <span class="t">Abre <input type="time" value="${o}" onchange="updateHours('${day}',0,this.value)"></span>
+          <span class="t">Cierra <input type="time" value="${c}" onchange="updateHours('${day}',1,this.value)"></span>
+          ${day === 'Domingo' ? `<span style="margin-left:auto;display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted)"><button class="switch ${SETTINGS.sundayOpen?'on':''}" onclick="toggleSunday()" aria-label="Abrir domingos"></button> Abierto</span>` : ''}
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <div style="display:grid;gap:16px;align-content:start">
+      <div class="card">
+        <div class="card-head"><h3>Recordatorios</h3></div>
+        <div class="set-row">
+          <div class="s-main"><div class="s-t">Enviar recordatorio por WhatsApp</div><div class="s-s">Se envía a las clientas con cita agendada</div></div>
+          <button class="switch ${SETTINGS.reminderOn?'on':''}" onclick="toggleReminder()" aria-label="Activar recordatorio"></button>
+        </div>
+        <div class="set-row">
+          <div class="s-main"><div class="s-t">¿Cuántas horas antes del turno?</div><div class="s-s">Antelación del mensaje automático</div></div>
+          <select class="select" style="width:130px" onchange="setReminderHours(this.value)" ${SETTINGS.reminderOn?'':'disabled'}>
+            ${[4,12,24,48].map(h => `<option value="${h}" ${SETTINGS.reminderHours===h?'selected':''}>${h} horas</option>`).join('')}
+          </select>
+        </div>
+        <div class="set-row">
+          <div class="s-main"><div class="s-t">¿Cada cuántas semanas avisar el retoque?</div><div class="s-s">Cuando ya toca igualar la raíz</div></div>
+          <select class="select" style="width:130px" onchange="setRetouchWeeks(this.value)">
+            ${[4,5,6,7,8].map(w => `<option value="${w}" ${SETTINGS.retouchWeeks===w?'selected':''}>${w} semanas</option>`).join('')}
+          </select>
+        </div>
+        <div class="preview-wrap">
+          <div class="preview-lbl">Vista previa · recordatorio de turno</div>
+          <div class="preview-msg">${reminderPreview()}</div>
+          <div class="preview-lbl" style="margin-top:12px">Vista previa · aviso de retoque</div>
+          <div class="preview-msg">${retouchPreview()}</div>
+          <p class="mini" style="margin-top:8px">Se personaliza con el nombre, el servicio y la hora de cada cita.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Datos del estudio</h3></div>
+        <div class="card-pad">
+          <div class="field"><label>Nombre comercial</label><input class="input" value="Lucía Patiño · Especialista en Color"></div>
+          <div class="field"><label>WhatsApp de atención</label><input class="input" value="+593 96 893 3189"></div>
+          <div class="field" style="margin-bottom:0"><label>Dirección</label><input class="input" value="Luis Cordero 13-3 y Antonio Vega Muñoz, Cuenca"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Sitio público</h3></div>
+        <div class="card-pad">
+          <p class="mini" style="margin-bottom:10px">Las clientas reservan desde la web; las citas caen en esta agenda.</p>
+          <a class="btn btn-primary btn-block" href="${PUBLIC_URL}" target="_blank" rel="noopener">${icon('external')} Ver la web pública</a>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+function updateService(id, key, val){
+  const s = svc(id);
+  if(!s) return;
+  if(key === 'name'){
+    const name = String(val).trim();
+    if(name.length < 2){ toast('El nombre del servicio es muy corto.'); return; }
+    s.name = name;
+    toast('Servicio renombrado.');
+    return;
+  }
+  const n = Number(val);
+  if(!n || n < 0){ toast('Valor no válido.'); return; }
+  s[key] = Math.round(n);
+  toast('Servicio actualizado: ' + s.name + ' · ' + (key === 'price' ? fmtUSD(s.price) : s.dur + ' min'));
+}
+function addService(){
+  const id = 's' + (SERVICES.length + 1);
+  SERVICES.push({id, name:'Servicio nuevo', price:25, dur:60, cat:'Color', pro:'lucia'});
+  toast('Servicio agregado al final de la lista. Edite el nombre en el sistema real.');
+  go('ajustes');
+}
+function updateHours(day, idx, val){
+  SETTINGS.hours[day][idx] = val;
+  toast('Horario de ' + day + ' actualizado.');
+}
+function toggleReminder(){
+  SETTINGS.reminderOn = !SETTINGS.reminderOn;
+  toast(SETTINGS.reminderOn ? 'Recordatorio automático activado.' : 'Recordatorio automático desactivado.');
+  viewAjustes(document.getElementById('view'));
+}
+function setReminderHours(v){
+  SETTINGS.reminderHours = Number(v);
+  toast('Los recordatorios se enviarán ' + v + ' horas antes.');
+  viewAjustes(document.getElementById('view'));
+}
+function setRetouchWeeks(v){
+  SETTINGS.retouchWeeks = Number(v);
+  toast('El aviso de retoque se enviará a las ' + v + ' semanas del último color.');
+  viewAjustes(document.getElementById('view'));
+}
+function toggleSunday(){
+  SETTINGS.sundayOpen = !SETTINGS.sundayOpen;
+  toast(SETTINGS.sundayOpen ? 'Domingo abierto.' : 'Domingo cerrado.');
+  viewAjustes(document.getElementById('view'));
+}
+function reminderPreview(){
+  if(!SETTINGS.reminderOn) return 'Recordatorio desactivado. Las clientas no reciben mensaje automático.';
+  const next = APPOINTMENTS.find(a => a.date >= iso(TODAY) && a.status !== 'cancelada') || APPOINTMENTS[0];
+  const c = cli(next.client), s = svc(next.service);
+  return `Hola ${c.name.split(' ')[0]}, le saluda Lucía Patiño, especialista en color. Le recordamos su cita del ${fmtLong(parseISO(next.date)).toLowerCase()} a las ${to12(next.time)} para ${s.name.toLowerCase()}. Responda SÍ para confirmar o NO para reprogramar.`;
+}
+function retouchPreview(){
+  const c = retouchesDue()[0] || CLIENTS.find(x => x.retouch) || CLIENTS[0];
+  return `Hola ${c.name.split(' ')[0]}, le escribimos del estudio de Lucía Patiño. Ya pasaron ${SETTINGS.retouchWeeks} semanas de su último color y es buen momento para igualar la raíz. ¿Le reservamos un espacio esta semana?`;
+}
+
+/* teclado */
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+/* arranque: login visible */
+
+</script>
+</body>
+</html>
